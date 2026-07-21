@@ -107,6 +107,13 @@ subirlo a mano al repo si hiciera falta.
 > Para probar la función localmente: `npx wrangler pages dev -- npm run dev` (o `wrangler pages dev dist`).
 > En `npm run dev` a secas, publicar avisa que solo funciona en el sitio desplegado.
 
+### SEO / compartir
+
+Tras el despliegue, reemplaza `https://TU-DOMINIO` por tu dominio real en `public/sitemap.xml`
+y `public/robots.txt`, y pon la **URL absoluta** del logo en las etiquetas Open Graph
+(`og:image`, `twitter:image`) e `og:url` de `index.html` — las previews de WhatsApp/redes
+necesitan URLs absolutas para mostrar la imagen.
+
 ## Formulario de contacto
 
 Al ser un sitio estático sin backend, el formulario arma un correo (`mailto:`) al club con los
