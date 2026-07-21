@@ -12,7 +12,7 @@ const heroVariant = computed(() => store.heroVariant)
 const heroStats = computed(() => [
   { value: String(store.categoryList.length), label: 'Categorías' },
   { value: String(store.db.players.length), label: 'Jugadores' },
-  { value: String(store.db.championships.length), label: 'Campeonatos' },
+  { value: String(store.db.championships.filter((c) => c.status === 'En curso').length), label: 'Campeonatos' },
   { value: '6', label: 'Entrenos / semana' },
 ])
 
@@ -37,7 +37,7 @@ const trainingsView = computed(() =>
 
 // ——— Campeonatos destacados ———
 const champsView = computed(() =>
-  store.db.championships.map((ch) => {
+  store.db.championships.filter((ch) => ch.status === 'En curso').map((ch) => {
     const ranked = store.rankedStandings(ch)
     const rows = ranked.map((r) => ({
       rank: r.rank, team: r.team, pj: r.pj, pts: r.pts,
@@ -72,6 +72,7 @@ function nextGame(ch) {
 const matches = computed(() => {
   const list = []
   store.db.championships.forEach((ch) => {
+    if (ch.status !== 'En curso') return
     const g = nextGame(ch)
     if (!g) return
     list.push({

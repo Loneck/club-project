@@ -54,6 +54,10 @@ const fields = computed(() => {
     return [
       { key: 'name', label: 'Nombre del campeonato', type: 'text' },
       { key: 'category', label: 'Categoría', type: 'select', options: store.catOptions },
+      { key: 'status', label: 'Estado', type: 'select', options: [
+        { value: 'En curso', label: 'En curso' },
+        { value: 'Finalizado', label: 'Finalizado' },
+      ] },
     ]
   }
   if (modalKind.value === 'standing') {
@@ -84,7 +88,7 @@ function reset(obj) {
 function open(kind, item) {
   modalKind.value = kind
   editingId.value = item ? item.id : null
-  if (kind === 'champ') reset(item ? { ...item } : { name: '', category: store.categoryList[0] ? store.categoryList[0].key : '' })
+  if (kind === 'champ') reset(item ? { ...item } : { name: '', category: store.categoryList[0] ? store.categoryList[0].key : '', status: 'En curso' })
   if (kind === 'standing') reset(item ? { ...item } : { team: '', pj: 0, pg: 0, pp: 0 })
   if (kind === 'result') reset(item ? { ...item } : { date: new Date().toISOString().slice(0, 10), home: 'Club Project', away: '', hs: 0, as: 0, status: 'programado' })
   modalOpen.value = true

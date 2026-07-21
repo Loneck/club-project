@@ -247,11 +247,12 @@ export const useClubStore = defineStore('club', {
         if (i >= 0) {
           this.db.championships[i].name = item.name
           this.db.championships[i].category = item.category
+          this.db.championships[i].status = item.status || 'En curso'
         }
       } else {
         this.db.championships.push({
           id: uid('c'), name: item.name, category: item.category,
-          status: 'En curso', standings: [], results: [],
+          status: item.status || 'En curso', standings: [], results: [],
         })
       }
       this.persist()

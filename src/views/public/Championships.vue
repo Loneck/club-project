@@ -18,7 +18,7 @@ const champsView = computed(() =>
       scoreLabel: g.status === 'finalizado' ? `${g.hs} – ${g.as}` : 'Programado',
       scoreColor: g.status === 'finalizado' ? 'var(--fg-1)' : 'var(--fg-3)',
     }))
-    return { id: ch.id, name: ch.name, catLabel: store.catLabel(ch.category), statusLabel: ch.status, rows, results, hasResults: ch.results.length > 0 }
+    return { id: ch.id, name: ch.name, catLabel: store.catLabel(ch.category), statusLabel: ch.status, finished: ch.status !== 'En curso', rows, results, hasResults: ch.results.length > 0 }
   })
 )
 </script>
@@ -39,7 +39,7 @@ const champsView = computed(() =>
               <div style="font-family:var(--font-family);font-weight:600;font-size:12px;color:var(--fg-3);margin-top:2px">{{ ch.catLabel }}</div>
             </div>
           </div>
-          <span class="gv-badge" style="border-color:var(--accent);color:var(--accent)">{{ ch.statusLabel }}</span>
+          <span class="gv-badge" :style="ch.finished ? 'border-color:var(--stroke-1);color:var(--fg-3)' : 'border-color:var(--accent);color:var(--accent)'">{{ ch.statusLabel }}</span>
         </div>
         <div style="padding:16px 18px 18px">
           <div style="font-family:var(--font-family);font-weight:600;font-size:12px;color:var(--fg-3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px">Tabla de posiciones</div>
