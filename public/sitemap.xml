@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Reemplaza https://TU-DOMINIO por el dominio real tras el despliegue. -->
+<!-- Reemplaza https://club-project.pages.dev por el dominio real tras el despliegue. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://TU-DOMINIO/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://TU-DOMINIO/entrenamientos</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://TU-DOMINIO/campeonatos</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://TU-DOMINIO/galeria</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://TU-DOMINIO/contacto</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://club-project.pages.dev/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://club-project.pages.dev/entrenamientos</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://club-project.pages.dev/campeonatos</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://club-project.pages.dev/galeria</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://club-project.pages.dev/contacto</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>
