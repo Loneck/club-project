@@ -49,25 +49,51 @@ const champsView = computed(() =>
   })
 )
 
-// ——— Carrusel próximos partidos ———
-const matches = computed(() =>
-  store.categories.map((k) => {
-    const ch = store.db.championships.find((c) => c.category === k)
-    const g = ch ? ch.results.find((r) => r.status === 'programado') : null
-    return {
-      catLabel: store.catLabel(k),
-      champName: ch ? ch.name : 'Sin campeonato asignado',
-      home: g ? g.home : 'Club Project',
-      away: g ? g.away : 'Rival por definir',
-      awayInit: g ? (g.away || '').slice(0, 3).toUpperCase() : '—',
-      date: g ? g.date : 'Por confirmar',
-    }
+// ——— Carrusel: próximo partido POR campeonato ———
+// Un slide por campeonato que tenga partidos programados; muestra el más cercano por fecha
+// (prefiere de hoy en adelante; si todos pasaron, cae al más próximo disponible).
+function todayIso() {
+  const d = new Date()
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
+function isoOrLast(s) {
+  return /^\d{4}-\d{2}-\d{2}$/.test(s || '') ? s : '9999-99-99'
+}
+function nextGame(ch) {
+  const up = ch.results
+    .filter((r) => r.status === 'programado')
+    .slice()
+    .sort((a, b) => isoOrLast(a.date).localeCompare(isoOrLast(b.date)))
+  if (!up.length) return null
+  const today = todayIso()
+  return up.find((g) => isoOrLast(g.date) >= today) || up[0]
+}
+
+const matches = computed(() => {
+  const list = []
+  store.db.championships.forEach((ch) => {
+    const g = nextGame(ch)
+    if (!g) return
+    list.push({
+      catLabel: store.catLabel(ch.category),
+      champName: ch.name,
+      home: g.home,
+      away: g.away,
+      homeIsClub: g.home === 'Club Project',
+      homeInit: (g.home || '').slice(0, 3).toUpperCase(),
+      awayInit: (g.away || '').slice(0, 3).toUpperCase(),
+      date: store.formatDate(g.date),
+    })
   })
-)
+  return list
+})
+
 const matchIdx = ref(0)
-const currentMatch = computed(() => matches.value[matchIdx.value % matches.value.length])
+const safeIdx = computed(() => (matches.value.length ? matchIdx.value % matches.value.length : 0))
+const currentMatch = computed(() => (matches.value.length ? matches.value[safeIdx.value] : null))
 function matchNav(d) {
   const n = matches.value.length
+  if (!n) return
   matchIdx.value = (matchIdx.value + d + n) % n
 }
 
@@ -143,28 +169,39 @@ function goCategory(key) {
     <section style="max-width:1180px;margin:0 auto;padding:56px 24px 0">
       <div style="background:#0E141B;border-radius:8px;padding:18px 22px;color:#fff;position:relative;overflow:hidden">
         <div style="position:absolute;right:-60px;top:-40px;width:200px;height:200px;border-radius:999px;background:radial-gradient(circle,rgba(0,155,217,.28),transparent 65%)"></div>
-        <div style="position:relative;display:flex;align-items:center;gap:28px;flex-wrap:wrap">
+        <div v-if="currentMatch" style="position:relative;display:flex;align-items:center;gap:28px;flex-wrap:wrap">
           <div style="min-width:172px">
             <div style="display:flex;align-items:center;gap:8px;font-family:var(--font-family);font-weight:600;font-size:11px;color:#7FD3F2;letter-spacing:.04em;text-transform:uppercase"><i class="fa-solid fa-calendar-check" style="font-size:11px"></i>Próximo partido</div>
             <div style="display:inline-flex;margin-top:10px;padding:3px 10px;border:1px solid rgba(127,211,242,.35);border-radius:999px;font-family:var(--font-family);font-weight:600;font-size:11px;color:#7FD3F2">{{ currentMatch.catLabel }}</div>
             <div style="font-family:var(--font-family);font-weight:600;font-size:12px;color:rgba(255,255,255,.5);margin-top:8px">{{ currentMatch.champName }}</div>
           </div>
           <div style="display:flex;align-items:center;gap:16px;margin:0 auto">
-            <div style="display:flex;flex-direction:column;align-items:center;gap:7px"><img src="/assets/logo.png" alt="Project" style="width:44px;height:44px;object-fit:contain" /><span style="font-family:var(--font-family);font-weight:700;font-size:12px">{{ currentMatch.home }}</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:7px">
+              <img v-if="currentMatch.homeIsClub" src="/assets/logo.png" alt="Project" style="width:44px;height:44px;object-fit:contain" />
+              <div v-else style="width:44px;height:44px;border-radius:999px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-family:var(--font-family);font-weight:700;font-size:13px">{{ currentMatch.homeInit }}</div>
+              <span style="font-family:var(--font-family);font-weight:700;font-size:12px">{{ currentMatch.home }}</span>
+            </div>
             <span style="font-family:var(--font-family);font-weight:800;font-size:15px;color:rgba(255,255,255,.6)">VS</span>
-            <div style="display:flex;flex-direction:column;align-items:center;gap:7px"><div style="width:44px;height:44px;border-radius:999px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-family:var(--font-family);font-weight:700;font-size:13px">{{ currentMatch.awayInit }}</div><span style="font-family:var(--font-family);font-weight:700;font-size:12px">{{ currentMatch.away }}</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:7px">
+              <img v-if="currentMatch.away === 'Club Project'" src="/assets/logo.png" alt="Project" style="width:44px;height:44px;object-fit:contain" />
+              <div v-else style="width:44px;height:44px;border-radius:999px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-family:var(--font-family);font-weight:700;font-size:13px">{{ currentMatch.awayInit }}</div>
+              <span style="font-family:var(--font-family);font-weight:700;font-size:12px">{{ currentMatch.away }}</span>
+            </div>
           </div>
           <div style="display:flex;flex-direction:column;align-items:flex-end;gap:12px">
             <div style="font-family:var(--font-family);font-weight:800;font-size:24px;letter-spacing:-.02em">{{ currentMatch.date }}</div>
-            <div style="display:flex;align-items:center;gap:10px">
+            <div v-if="matches.length > 1" style="display:flex;align-items:center;gap:10px">
               <div style="display:flex;gap:6px">
                 <button v-for="(m, i) in matches" :key="i" @click="matchIdx = i" aria-label="Ir a partido"
-                  :style="`width:8px;height:8px;border-radius:999px;border:0;cursor:pointer;padding:0;background:${i === matchIdx % matches.length ? '#7FD3F2' : 'rgba(255,255,255,.25)'}`"></button>
+                  :style="`width:8px;height:8px;border-radius:999px;border:0;cursor:pointer;padding:0;background:${i === safeIdx ? '#7FD3F2' : 'rgba(255,255,255,.25)'}`"></button>
               </div>
               <button @click="matchNav(-1)" aria-label="Anterior" style="width:28px;height:28px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#fff;cursor:pointer"><i class="fa-solid fa-chevron-left" style="font-size:11px"></i></button>
               <button @click="matchNav(1)" aria-label="Siguiente" style="width:28px;height:28px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#fff;cursor:pointer"><i class="fa-solid fa-chevron-right" style="font-size:11px"></i></button>
             </div>
           </div>
+        </div>
+        <div v-else style="position:relative;display:flex;align-items:center;gap:12px;color:rgba(255,255,255,.7);font-family:var(--font-family);font-size:14px;font-weight:600">
+          <i class="fa-solid fa-calendar-xmark" style="color:#7FD3F2"></i>No hay próximos partidos programados.
         </div>
       </div>
     </section>

@@ -62,6 +62,14 @@ export const useClubStore = defineStore('club', {
     catShort: (s) => (k) => { const c = (s.db.categories || []).find((x) => x.key === k); return c ? c.short : k },
     catIcon: (s) => (k) => { const c = (s.db.categories || []).find((x) => x.key === k); return c && c.icon ? c.icon : 'fa-solid fa-basketball' },
     catDesc: (s) => (k) => { const c = (s.db.categories || []).find((x) => x.key === k); return c && c.desc ? c.desc : '' },
+    // Fecha ISO (YYYY-MM-DD) → "12 jul". Formato libre/antiguo se muestra tal cual.
+    formatDate: () => (iso) => {
+      if (!iso) return 'Por confirmar'
+      const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso)
+      if (!m) return iso
+      const months = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic']
+      return `${parseInt(m[3], 10)} ${months[parseInt(m[2], 10) - 1]}`
+    },
     venue: (s) => s.db.settings?.venue || 'Gimnasio Municipal Project',
     contactInfo: (s) => s.db.settings?.contact || {},
     heroVariant: (s) => s.db.settings?.heroVariant || 'split',

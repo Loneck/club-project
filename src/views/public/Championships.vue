@@ -14,7 +14,7 @@ const champsView = computed(() =>
       rowBg: r.team === 'Club Project' ? 'var(--accent-subtle)' : '#fff',
     }))
     const results = ch.results.map((g) => ({
-      date: g.date, home: g.home, away: g.away,
+      date: store.formatDate(g.date), home: g.home, away: g.away,
       scoreLabel: g.status === 'finalizado' ? `${g.hs} – ${g.as}` : 'Programado',
       scoreColor: g.status === 'finalizado' ? 'var(--fg-1)' : 'var(--fg-3)',
     }))

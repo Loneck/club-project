@@ -59,9 +59,9 @@
         { "id": "s6", "team": "Halcones BC", "pj": 8, "pg": 1, "pp": 7 }
       ],
       "results": [
-        { "id": "r1", "date": "12 Jun", "home": "Club Project", "away": "Halcones BC", "hs": 78, "as": 64, "status": "finalizado" },
-        { "id": "r2", "date": "19 Jun", "home": "Deportivo Andes", "away": "Club Project", "hs": 71, "as": 69, "status": "finalizado" },
-        { "id": "r3", "date": "03 Jul", "home": "Club Project", "away": "Atlético Sur", "hs": 0, "as": 0, "status": "programado" }
+        { "id": "r1", "date": "2026-06-12", "home": "Club Project", "away": "Halcones BC", "hs": 78, "as": 64, "status": "finalizado" },
+        { "id": "r2", "date": "2026-06-19", "home": "Deportivo Andes", "away": "Club Project", "hs": 71, "as": 69, "status": "finalizado" },
+        { "id": "r3", "date": "2026-07-03", "home": "Club Project", "away": "Atlético Sur", "hs": 0, "as": 0, "status": "programado" }
       ]
     },
     {
@@ -73,9 +73,9 @@
         { "id": "s10", "team": "Leones Senior", "pj": 6, "pg": 1, "pp": 5 }
       ],
       "results": [
-        { "id": "r4", "date": "15 Jun", "home": "Club Project", "away": "Old Stars", "hs": 66, "as": 58, "status": "finalizado" },
-        { "id": "r5", "date": "29 Jun", "home": "Veteranos FC", "away": "Club Project", "hs": 60, "as": 72, "status": "finalizado" },
-        { "id": "r5b", "date": "05 Jul", "home": "Club Project", "away": "Leones Senior", "hs": 0, "as": 0, "status": "programado" }
+        { "id": "r4", "date": "2026-06-15", "home": "Club Project", "away": "Old Stars", "hs": 66, "as": 58, "status": "finalizado" },
+        { "id": "r5", "date": "2026-06-29", "home": "Veteranos FC", "away": "Club Project", "hs": 60, "as": 72, "status": "finalizado" },
+        { "id": "r5b", "date": "2026-07-05", "home": "Club Project", "away": "Leones Senior", "hs": 0, "as": 0, "status": "programado" }
       ]
     },
     {
@@ -88,9 +88,9 @@
         { "id": "s15", "team": "Amazonas", "pj": 7, "pg": 1, "pp": 6 }
       ],
       "results": [
-        { "id": "r6", "date": "10 Jun", "home": "Club Project", "away": "Amazonas", "hs": 82, "as": 55, "status": "finalizado" },
-        { "id": "r7", "date": "24 Jun", "home": "Diablas BC", "away": "Club Project", "hs": 68, "as": 70, "status": "finalizado" },
-        { "id": "r8", "date": "08 Jul", "home": "Club Project", "away": "Panteras", "hs": 0, "as": 0, "status": "programado" }
+        { "id": "r6", "date": "2026-06-10", "home": "Club Project", "away": "Amazonas", "hs": 82, "as": 55, "status": "finalizado" },
+        { "id": "r7", "date": "2026-06-24", "home": "Diablas BC", "away": "Club Project", "hs": 68, "as": 70, "status": "finalizado" },
+        { "id": "r8", "date": "2026-07-08", "home": "Club Project", "away": "Panteras", "hs": 0, "as": 0, "status": "programado" }
       ]
     }
   ],
