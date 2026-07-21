@@ -11,7 +11,12 @@ const joinSteps = [
   { n: 3, text: 'Formaliza tu inscripción y recibe la información del equipo.' },
 ]
 
-const form = reactive({ name: '', contactInfo: '', cat: 'adulto', msg: '' })
+const form = reactive({
+  name: '',
+  contactInfo: '',
+  cat: store.categoryList[0] ? store.categoryList[0].key : '',
+  msg: '',
+})
 
 function submit() {
   // Sitio estático sin backend: abrimos el cliente de correo con los datos.
@@ -64,9 +69,7 @@ function submit() {
           <div class="gv-field"><label class="gv-label">Correo o teléfono</label><input class="gv-input" v-model="form.contactInfo" placeholder="Para poder responderte" /></div>
           <div class="gv-field"><label class="gv-label">Categoría de interés</label>
             <select class="gv-input" v-model="form.cat">
-              <option value="adulto">Adulto — Todo Competidor</option>
-              <option value="senior">Senior</option>
-              <option value="femenino">Femenino</option>
+              <option v-for="c in store.categoryList" :key="c.key" :value="c.key">{{ c.label }}</option>
             </select>
           </div>
           <div class="gv-field"><label class="gv-label">Mensaje</label><textarea class="gv-input" style="height:88px;padding:8px;resize:vertical" v-model="form.msg" placeholder="Cuéntanos tu experiencia previa (opcional)"></textarea></div>

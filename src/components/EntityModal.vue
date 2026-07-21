@@ -39,6 +39,14 @@ function set(key, val) {
             :value="modelValue[f.key] ?? 0"
             @input="set(f.key, $event.target.value)"
           />
+          <textarea
+            v-else-if="f.type === 'textarea'"
+            class="gv-input"
+            style="height:88px;padding:8px;resize:vertical"
+            :value="modelValue[f.key] ?? ''"
+            :placeholder="f.placeholder || ''"
+            @input="set(f.key, $event.target.value)"
+          ></textarea>
           <input
             v-else
             class="gv-input"

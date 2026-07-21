@@ -10,7 +10,7 @@ const cover = computed(() => store.db.cover)
 const heroVariant = computed(() => store.heroVariant)
 
 const heroStats = computed(() => [
-  { value: '3', label: 'Categorías' },
+  { value: String(store.categoryList.length), label: 'Categorías' },
   { value: String(store.db.players.length), label: 'Jugadores' },
   { value: String(store.db.championships.length), label: 'Campeonatos' },
   { value: '6', label: 'Entrenos / semana' },
@@ -81,12 +81,12 @@ function goCategory(key) {
     <!-- HERO: split -->
     <section v-if="heroVariant === 'split'"
       style="background:radial-gradient(1200px 500px at 78% 30%, rgba(0,155,217,.28), transparent 60%), linear-gradient(180deg,#0E141B,#0A0E13);color:#fff">
-      <div class="hero-split" style="max-width:1180px;margin:0 auto;padding:72px 24px 80px;display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center">
+      <div class="hero-split" style="max-width:1180px;margin:0 auto;padding:clamp(44px,8vw,72px) 20px clamp(52px,9vw,80px);display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center">
         <div>
           <div style="display:inline-flex;align-items:center;gap:8px;padding:5px 12px;border:1px solid rgba(127,211,242,.35);border-radius:999px;font-family:var(--font-family);font-weight:600;font-size:12px;color:#7FD3F2">
             <i class="fa-solid fa-basketball" style="font-size:11px"></i>{{ cover.badge }}
           </div>
-          <h1 style="font-family:var(--font-family);font-weight:700;font-size:46px;line-height:1.05;letter-spacing:-.02em;margin:20px 0 0;color:#fff">{{ cover.title }}</h1>
+          <h1 style="font-family:var(--font-family);font-weight:700;font-size:clamp(30px,6.5vw,46px);line-height:1.05;letter-spacing:-.02em;margin:20px 0 0;color:#fff">{{ cover.title }}</h1>
           <p style="font-family:var(--font-family);font-size:17px;line-height:1.55;color:rgba(255,255,255,.72);max-width:460px;margin:18px 0 0">{{ cover.subtitle }}</p>
           <div style="display:flex;gap:12px;margin-top:32px;flex-wrap:wrap">
             <button @click="router.push({ name: 'contacto' })" class="gv-btn gv-btn--pill gv-btn--primary" style="height:44px;padding:0 22px;font-size:15px">Quiero entrenar</button>
@@ -94,8 +94,8 @@ function goCategory(key) {
           </div>
         </div>
         <div style="display:flex;align-items:center;justify-content:center;position:relative">
-          <div style="position:absolute;width:340px;height:340px;border-radius:999px;background:radial-gradient(circle,rgba(0,175,242,.45),transparent 65%);animation:cdspGlow 5s ease-in-out infinite"></div>
-          <img src="/assets/logo.png" alt="Escudo Club Project" style="position:relative;width:340px;height:340px;object-fit:contain;filter:drop-shadow(0 16px 40px rgba(0,0,0,.55))" />
+          <div style="position:absolute;width:min(340px,78vw);height:min(340px,78vw);border-radius:999px;background:radial-gradient(circle,rgba(0,175,242,.45),transparent 65%);animation:cdspGlow 5s ease-in-out infinite"></div>
+          <img src="/assets/logo.png" alt="Escudo Club Project" style="position:relative;width:min(340px,78vw);height:auto;object-fit:contain;filter:drop-shadow(0 16px 40px rgba(0,0,0,.55))" />
         </div>
       </div>
     </section>
@@ -103,13 +103,13 @@ function goCategory(key) {
     <!-- HERO: centered -->
     <section v-else-if="heroVariant === 'centered'"
       style="background:radial-gradient(900px 480px at 50% 8%, rgba(0,155,217,.32), transparent 62%), linear-gradient(180deg,#0E141B,#0A0E13);color:#fff">
-      <div style="max-width:820px;margin:0 auto;padding:70px 24px 76px;text-align:center;display:flex;flex-direction:column;align-items:center">
+      <div style="max-width:820px;margin:0 auto;padding:clamp(44px,8vw,70px) 20px clamp(48px,9vw,76px);text-align:center;display:flex;flex-direction:column;align-items:center">
         <div style="position:relative;margin-bottom:26px">
           <div style="position:absolute;inset:-24px;border-radius:999px;background:radial-gradient(circle,rgba(0,175,242,.5),transparent 65%);animation:cdspGlow 5s ease-in-out infinite"></div>
-          <img src="/assets/logo.png" alt="Escudo Club Project" style="position:relative;width:184px;height:184px;object-fit:contain;filter:drop-shadow(0 12px 30px rgba(0,0,0,.5))" />
+          <img src="/assets/logo.png" alt="Escudo Club Project" style="position:relative;width:min(184px,52vw);height:auto;object-fit:contain;filter:drop-shadow(0 12px 30px rgba(0,0,0,.5))" />
         </div>
         <div style="display:inline-flex;align-items:center;gap:8px;padding:5px 12px;border:1px solid rgba(127,211,242,.35);border-radius:999px;font-family:var(--font-family);font-weight:600;font-size:12px;color:#7FD3F2">{{ cover.badge }}</div>
-        <h1 style="font-family:var(--font-family);font-weight:700;font-size:48px;line-height:1.05;letter-spacing:-.02em;margin:18px 0 0;color:#fff">{{ cover.title }}</h1>
+        <h1 style="font-family:var(--font-family);font-weight:700;font-size:clamp(30px,7vw,48px);line-height:1.05;letter-spacing:-.02em;margin:18px 0 0;color:#fff">{{ cover.title }}</h1>
         <p style="font-family:var(--font-family);font-size:17px;line-height:1.55;color:rgba(255,255,255,.72);max-width:520px;margin:16px auto 0">{{ cover.subtitle }}</p>
         <div style="display:flex;gap:12px;margin-top:30px;justify-content:center;flex-wrap:wrap">
           <button @click="router.push({ name: 'contacto' })" class="gv-btn gv-btn--pill gv-btn--primary" style="height:44px;padding:0 22px;font-size:15px">Quiero entrenar</button>
@@ -125,7 +125,7 @@ function goCategory(key) {
         <img src="/assets/logo.png" alt="Escudo" style="width:96px;height:96px;object-fit:contain" />
         <div>
           <div style="font-family:var(--font-family);font-weight:600;font-size:12px;color:#7FD3F2">{{ cover.badge }}</div>
-          <h1 style="font-family:var(--font-family);font-weight:700;font-size:42px;line-height:1.05;letter-spacing:-.02em;margin:8px 0 0;color:#fff">{{ cover.title }}</h1>
+          <h1 style="font-family:var(--font-family);font-weight:700;font-size:clamp(28px,6vw,42px);line-height:1.05;letter-spacing:-.02em;margin:8px 0 0;color:#fff">{{ cover.title }}</h1>
         </div>
       </div>
       <div style="max-width:1180px;margin:0 auto;padding:22px 24px 66px">

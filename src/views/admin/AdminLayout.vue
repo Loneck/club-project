@@ -10,6 +10,7 @@ const router = useRouter()
 
 const adminNav = [
   { name: 'admin-portada', label: 'Portada', icon: 'fa-solid fa-image' },
+  { name: 'admin-categorias', label: 'Categorías', icon: 'fa-solid fa-layer-group' },
   { name: 'admin-entrenamientos', label: 'Entrenamientos', icon: 'fa-solid fa-calendar-days' },
   { name: 'admin-jugadores', label: 'Jugadores', icon: 'fa-solid fa-users' },
   { name: 'admin-campeonatos', label: 'Campeonatos', icon: 'fa-solid fa-trophy' },
@@ -18,6 +19,7 @@ const adminNav = [
 
 const titles = {
   'admin-portada': 'Portada del sitio',
+  'admin-categorias': 'Categorías',
   'admin-entrenamientos': 'Entrenamientos',
   'admin-jugadores': 'Jugadores',
   'admin-campeonatos': 'Campeonatos',
@@ -25,13 +27,16 @@ const titles = {
 }
 const title = computed(() => titles[route.name] || 'Administración')
 
+// ——— Sidebar móvil ———
+const sidebarOpen = ref(false)
+function navGo(name) {
+  router.push({ name })
+  sidebarOpen.value = false
+}
+
 // ——— Identidad (Cloudflare Access) ———
 const email = ref('')
-const initials = computed(() => {
-  const e = email.value
-  if (!e) return 'AD'
-  return e.slice(0, 2).toUpperCase()
-})
+const initials = computed(() => (email.value ? email.value.slice(0, 2).toUpperCase() : 'AD'))
 onMounted(async () => {
   const id = await getIdentity()
   if (id && id.email) email.value = id.email
@@ -39,7 +44,6 @@ onMounted(async () => {
 
 // ——— Publicación ———
 const publishing = ref(false)
-
 async function doPublish() {
   publishing.value = true
   try {
@@ -53,7 +57,6 @@ async function doPublish() {
     publishing.value = false
   }
 }
-
 function descargar() {
   downloadJson(store.exportJson(), 'club.json')
   store.showToast('JSON descargado.')
@@ -62,7 +65,9 @@ function descargar() {
 
 <template>
   <div class="gv-shell" style="min-height:100vh">
-    <aside class="gv-sidebar">
+    <div v-if="sidebarOpen" class="admin-overlay" @click="sidebarOpen = false"></div>
+
+    <aside class="gv-sidebar" :class="{ 'is-open': sidebarOpen }">
       <div class="gv-sidebar__logo" style="background:#0E141B;display:flex;align-items:center;gap:10px">
         <img src="/assets/logo.png" alt="Club Project" style="width:36px;height:36px;object-fit:contain" />
         <div>
@@ -76,37 +81,28 @@ function descargar() {
           :key="a.name"
           class="gv-navitem"
           :class="{ 'is-active': route.name === a.name }"
-          @click="router.push({ name: a.name })"
+          @click="navGo(a.name)"
         ><i :class="a.icon"></i>{{ a.label }}</button>
       </nav>
       <div style="margin-top:auto;padding:8px;display:flex;flex-direction:column;gap:2px">
-        <button class="gv-navitem" @click="router.push({ name: 'home' })"><i class="fa-solid fa-arrow-left"></i>Ver sitio público</button>
+        <button class="gv-navitem" @click="navGo('home')"><i class="fa-solid fa-arrow-left"></i>Ver sitio público</button>
         <a v-if="email" class="gv-navitem" :href="LOGOUT_URL"><i class="fa-solid fa-right-from-bracket"></i>Cerrar sesión</a>
       </div>
     </aside>
 
     <main class="gv-main">
       <div class="gv-topbar">
+        <button class="admin-hamburger" aria-label="Abrir menú" @click="sidebarOpen = true"><i class="fa-solid fa-bars"></i></button>
         <h1 class="gv-topbar__title">{{ title }}</h1>
         <div class="gv-topbar__actions">
-          <span v-if="store.dirty" style="font-family:var(--font-family);font-size:12px;font-weight:600;color:var(--color-highlight-main);display:inline-flex;align-items:center;gap:6px">
-            <i class="fa-solid fa-circle" style="font-size:8px"></i>Cambios sin publicar
+          <span v-if="store.dirty" class="dirty-badge" style="font-family:var(--font-family);font-size:12px;font-weight:600;color:var(--color-highlight-main);display:inline-flex;align-items:center;gap:6px">
+            <i class="fa-solid fa-circle" style="font-size:8px"></i><span class="dirty-text">Cambios sin publicar</span>
           </span>
           <button class="gv-btn gv-btn--pill gv-btn--tertiary" @click="descargar" style="height:34px" title="Descargar respaldo del contenido">
             <i class="fa-solid fa-download" style="font-size:12px"></i>
           </button>
-          <button
-            class="gv-btn gv-btn--pill gv-btn--secondary"
-            :disabled="!store.dirty"
-            @click="store.discardChanges()"
-            style="height:34px"
-          >Descartar</button>
-          <button
-            class="gv-btn gv-btn--pill gv-btn--primary"
-            :disabled="publishing || !store.dirty"
-            @click="doPublish"
-            style="height:34px"
-          >
+          <button class="gv-btn gv-btn--pill gv-btn--secondary" :disabled="!store.dirty" @click="store.discardChanges()" style="height:34px">Descartar</button>
+          <button class="gv-btn gv-btn--pill gv-btn--primary" :disabled="publishing || !store.dirty" @click="doPublish" style="height:34px">
             <i class="fa-solid" :class="publishing ? 'fa-spinner fa-spin' : 'fa-cloud-arrow-up'" style="margin-right:6px;font-size:12px"></i>
             {{ publishing ? 'Publicando…' : 'Publicar' }}
           </button>
@@ -120,3 +116,38 @@ function descargar() {
     </main>
   </div>
 </template>
+
+<style scoped>
+.admin-hamburger {
+  display: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid var(--stroke-1);
+  background: #fff;
+  color: var(--fg-2);
+  font-size: 16px;
+  cursor: pointer;
+  margin-right: 4px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+}
+.gv-topbar__title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.admin-overlay { display: none; }
+
+@media (max-width: 860px) {
+  .gv-shell { grid-template-columns: 1fr; }
+  .gv-sidebar {
+    position: fixed; top: 0; bottom: 0; left: 0; width: 240px; z-index: 120;
+    transform: translateX(-100%); transition: transform .22s ease;
+  }
+  .gv-sidebar.is-open { transform: translateX(0); box-shadow: 0 0 48px rgba(0, 0, 0, .35); }
+  .admin-overlay { display: block; position: fixed; inset: 0; background: rgba(0, 0, 0, .38); z-index: 110; }
+  .admin-hamburger { display: inline-flex; }
+  .gv-topbar { padding: 10px 14px; gap: 8px; }
+  .gv-topbar__actions { gap: 8px; }
+  .dirty-text { display: none; }
+  .gv-page { padding: 16px; }
+}
+</style>

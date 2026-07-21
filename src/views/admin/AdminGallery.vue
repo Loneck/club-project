@@ -42,9 +42,9 @@ function updateDraft(v) {
 
 <template>
   <div>
-    <div class="gv-banner" style="border-color:var(--accent);background:var(--color-info-surface);margin-bottom:16px">
+    <div class="gv-banner" style="border-color:var(--accent);background:var(--color-info-surface);margin-bottom:16px;align-items:flex-start">
       <div class="gv-banner__icon"><i class="fa-solid fa-circle-info" style="color:var(--accent)"></i></div>
-      Recomendado: sube las fotos a la carpeta <strong>public/assets/</strong> del repo y aquí referencia su ruta (ej: <code>/assets/foto1.jpg</code>). También puedes pegar una URL externa.
+      <div style="min-width:0;line-height:1.5">Recomendado: sube las fotos a la carpeta <strong>public/assets/</strong> del repo y aquí referencia su ruta (ej: <code>/assets/foto1.jpg</code>). También puedes pegar una URL externa.</div>
     </div>
     <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
       <button class="gv-btn gv-btn--pill gv-btn--primary" @click="openAdd"><i class="fa-solid fa-plus" style="margin-right:6px;font-size:12px"></i>Agregar imagen</button>

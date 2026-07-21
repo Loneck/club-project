@@ -8,9 +8,7 @@ const store = useClubStore()
 const filter = ref('all')
 const filters = computed(() => [
   { k: 'all', l: 'Todos' },
-  { k: 'adulto', l: 'Adulto' },
-  { k: 'senior', l: 'Senior' },
-  { k: 'femenino', l: 'Femenino' },
+  ...store.categoryList.map((c) => ({ k: c.key, l: c.short })),
 ])
 
 const rows = computed(() =>
@@ -35,7 +33,8 @@ const fields = computed(() => [
 function openAdd() {
   editingId.value = null
   Object.keys(draft).forEach((k) => delete draft[k])
-  Object.assign(draft, { name: '', number: 0, position: 'Base', category: filter.value === 'all' ? 'adulto' : filter.value })
+  const defaultCat = filter.value === 'all' ? (store.categoryList[0] ? store.categoryList[0].key : '') : filter.value
+  Object.assign(draft, { name: '', number: 0, position: 'Base', category: defaultCat })
   modalOpen.value = true
 }
 function openEdit(p) {
@@ -66,6 +65,7 @@ function updateDraft(v) {
       >{{ f.l }}</button>
       <button class="gv-btn gv-btn--pill gv-btn--primary" style="height:32px;margin-left:auto" @click="openAdd"><i class="fa-solid fa-plus" style="margin-right:6px;font-size:12px"></i>Nuevo jugador</button>
     </div>
+    <div class="table-scroll">
     <div class="gv-table">
       <div class="gv-table__hdr" style="grid-template-columns:70px 1.6fr 1fr 1.2fr 96px">
         <div class="gv-table__hcell">Dorsal</div><div class="gv-table__hcell">Nombre</div><div class="gv-table__hcell">Posición</div><div class="gv-table__hcell">Categoría</div><div class="gv-table__hcell">Acciones</div>
@@ -81,6 +81,7 @@ function updateDraft(v) {
         </div>
       </div>
       <div v-if="!rows.length" style="padding:16px;font-family:var(--font-family);color:var(--fg-3)">No hay jugadores en esta categoría.</div>
+    </div>
     </div>
 
     <EntityModal

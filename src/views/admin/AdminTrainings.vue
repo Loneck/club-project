@@ -23,7 +23,7 @@ const fields = computed(() => [
 
 function openAdd() {
   editingId.value = null
-  Object.assign(draft, { category: 'adulto', days: '', time: '20:00–22:00', place: store.venue, coach: '' })
+  Object.assign(draft, { category: store.categoryList[0] ? store.categoryList[0].key : '', days: '', time: '20:00–22:00', place: store.venue, coach: '' })
   modalOpen.value = true
 }
 function openEdit(t) {
@@ -46,6 +46,7 @@ function updateDraft(v) {
     <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
       <button class="gv-btn gv-btn--pill gv-btn--primary" @click="openAdd"><i class="fa-solid fa-plus" style="margin-right:6px;font-size:12px"></i>Nuevo entrenamiento</button>
     </div>
+    <div class="table-scroll">
     <div class="gv-table">
       <div class="gv-table__hdr" style="grid-template-columns:1.2fr 1.3fr .9fr 1.2fr 1fr 96px">
         <div class="gv-table__hcell">Categoría</div><div class="gv-table__hcell">Días</div><div class="gv-table__hcell">Horario</div><div class="gv-table__hcell">Lugar</div><div class="gv-table__hcell">Entrenador</div><div class="gv-table__hcell">Acciones</div>
@@ -62,6 +63,7 @@ function updateDraft(v) {
         </div>
       </div>
       <div v-if="!rows.length" style="padding:16px;font-family:var(--font-family);color:var(--fg-3)">No hay entrenamientos cargados.</div>
+    </div>
     </div>
 
     <EntityModal

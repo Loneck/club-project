@@ -23,6 +23,7 @@ const routes = [
     children: [
       { path: '', redirect: { name: 'admin-portada' } },
       { path: 'portada', name: 'admin-portada', component: () => import('@/views/admin/Cover.vue') },
+      { path: 'categorias', name: 'admin-categorias', component: () => import('@/views/admin/AdminCategories.vue') },
       { path: 'entrenamientos', name: 'admin-entrenamientos', component: () => import('@/views/admin/AdminTrainings.vue') },
       { path: 'jugadores', name: 'admin-jugadores', component: () => import('@/views/admin/Players.vue') },
       { path: 'campeonatos', name: 'admin-campeonatos', component: () => import('@/views/admin/AdminChampionships.vue') },

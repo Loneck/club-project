@@ -2,24 +2,33 @@ import { defineStore } from 'pinia'
 
 const WORKING_KEY = 'cdsp_working_v1'
 
-const CAT_LABELS = { adulto: 'Adulto — Todo Competidor', senior: 'Senior', femenino: 'Femenino' }
-const CAT_SHORT = { adulto: 'Adulto', senior: 'Senior', femenino: 'Femenino' }
-const CAT_ICONS = { adulto: 'fa-solid fa-basketball', senior: 'fa-solid fa-medal', femenino: 'fa-solid fa-fire-flame-curved' }
-const CAT_DESCS = {
-  adulto: 'Nuestra categoría principal y competitiva. Abierta a todo competidor con ganas de mejorar, entrenar en serio y representar al club en la liga regional.',
-  senior: 'Para jugadores +35 que mantienen viva la pasión por el básquetbol. Entrenamiento adaptado, competencia sana y mucho compañerismo.',
-  femenino: 'Un espacio para que las jugadoras crezcan, compitan y hagan comunidad. Todos los niveles bienvenidos, del debut a la competencia.',
-}
 const POSITIONS = ['Base', 'Escolta', 'Alero', 'Ala-Pívot', 'Pívot']
-const CATEGORIES = ['adulto', 'senior', 'femenino']
+
+// Categorías por defecto (semilla para una BD vacía o migración de datos antiguos).
+// En runtime las categorías viven en db.categories y se editan desde el dashboard.
+const DEFAULT_CATEGORIES = [
+  { key: 'adulto', label: 'Adulto — Todo Competidor', short: 'Adulto', icon: 'fa-solid fa-basketball', desc: 'Nuestra categoría principal y competitiva. Abierta a todo competidor con ganas de mejorar, entrenar en serio y representar al club en la liga regional.' },
+  { key: 'senior', label: 'Senior', short: 'Senior', icon: 'fa-solid fa-medal', desc: 'Para jugadores +35 que mantienen viva la pasión por el básquetbol. Entrenamiento adaptado, competencia sana y mucho compañerismo.' },
+  { key: 'femenino', label: 'Femenino', short: 'Femenino', icon: 'fa-solid fa-fire-flame-curved', desc: 'Un espacio para que las jugadoras crezcan, compitan y hagan comunidad. Todos los niveles bienvenidos, del debut a la competencia.' },
+]
 
 function uid(pfx) {
   return (pfx || 'x') + Math.random().toString(36).slice(2, 9)
 }
 
+// Genera una clave URL-friendly a partir del nombre de la categoría.
+function slugify(text) {
+  return String(text || '')
+    .toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '')
+}
+
 function emptyDb() {
   return {
     settings: { heroVariant: 'split', venue: 'Gimnasio Municipal Project', contact: {} },
+    categories: JSON.parse(JSON.stringify(DEFAULT_CATEGORIES)),
     cover: { badge: '', title: '', subtitle: '' },
     membership: { fee: 20000 },
     trainings: [],
@@ -40,9 +49,19 @@ export const useClubStore = defineStore('club', {
   }),
 
   getters: {
-    categories: () => CATEGORIES,
+    categoryList: (s) => s.db.categories || [],
+    categories() {
+      return this.categoryList.map((c) => c.key)
+    },
     positions: () => POSITIONS,
-    catOptions: () => CATEGORIES.map((k) => ({ value: k, label: CAT_LABELS[k] })),
+    catOptions() {
+      return this.categoryList.map((c) => ({ value: c.key, label: c.label }))
+    },
+    // Devuelven una función de lookup (reactiva ante cambios en db.categories).
+    catLabel: (s) => (k) => { const c = (s.db.categories || []).find((x) => x.key === k); return c ? c.label : k },
+    catShort: (s) => (k) => { const c = (s.db.categories || []).find((x) => x.key === k); return c ? c.short : k },
+    catIcon: (s) => (k) => { const c = (s.db.categories || []).find((x) => x.key === k); return c && c.icon ? c.icon : 'fa-solid fa-basketball' },
+    catDesc: (s) => (k) => { const c = (s.db.categories || []).find((x) => x.key === k); return c && c.desc ? c.desc : '' },
     venue: (s) => s.db.settings?.venue || 'Gimnasio Municipal Project',
     contactInfo: (s) => s.db.settings?.contact || {},
     heroVariant: (s) => s.db.settings?.heroVariant || 'split',
@@ -53,11 +72,6 @@ export const useClubStore = defineStore('club', {
   },
 
   actions: {
-    catLabel: (k) => CAT_LABELS[k] || k,
-    catShort: (k) => CAT_SHORT[k] || k,
-    catIcon: (k) => CAT_ICONS[k] || 'fa-solid fa-basketball',
-    catDesc: (k) => CAT_DESCS[k] || '',
-
     async load() {
       // Baseline = JSON publicado en el repo
       let baseline
@@ -79,6 +93,15 @@ export const useClubStore = defineStore('club', {
       }
 
       this.db = working || JSON.parse(JSON.stringify(baseline))
+
+      // Migración: datos antiguos sin categorías → sembrar (del baseline o el default).
+      if (!this.db.categories || !this.db.categories.length) {
+        const seed = baseline && baseline.categories && baseline.categories.length
+          ? baseline.categories
+          : DEFAULT_CATEGORIES
+        this.db.categories = JSON.parse(JSON.stringify(seed))
+      }
+
       this.dirty = !!working && JSON.stringify(working) !== JSON.stringify(baseline)
       this.loaded = true
     },
@@ -127,6 +150,51 @@ export const useClubStore = defineStore('club', {
       if (!this.db.settings) this.db.settings = {}
       this.db.settings.heroVariant = v
       this.persist()
+    },
+
+    // ——— Categorías ———
+    // Cuántos elementos referencian una categoría (para bloquear su eliminación).
+    categoryUsage(key) {
+      return {
+        players: this.db.players.filter((p) => p.category === key).length,
+        trainings: this.db.trainings.filter((t) => t.category === key).length,
+        championships: this.db.championships.filter((c) => c.category === key).length,
+      }
+    },
+    saveCategory(item) {
+      if (!this.db.categories) this.db.categories = []
+      const clean = {
+        label: (item.label || '').trim(),
+        short: (item.short || '').trim() || (item.label || '').trim(),
+        icon: (item.icon || '').trim() || 'fa-solid fa-basketball',
+        desc: (item.desc || '').trim(),
+      }
+      if (!clean.label) { this.showToast('El nombre es obligatorio'); return false }
+      if (item.key) {
+        const i = this.db.categories.findIndex((c) => c.key === item.key)
+        if (i >= 0) this.db.categories[i] = { key: item.key, ...clean }
+      } else {
+        let base = slugify(clean.label) || 'categoria'
+        let key = base
+        let n = 2
+        while (this.db.categories.some((c) => c.key === key)) key = `${base}-${n++}`
+        this.db.categories.push({ key, ...clean })
+      }
+      this.persist()
+      this.showToast('Categoría guardada')
+      return true
+    },
+    deleteCategory(key) {
+      const u = this.categoryUsage(key)
+      const total = u.players + u.trainings + u.championships
+      if (total > 0) {
+        this.showToast(`No se puede eliminar: ${total} elemento(s) usan esta categoría`)
+        return false
+      }
+      this.db.categories = (this.db.categories || []).filter((c) => c.key !== key)
+      this.persist()
+      this.showToast('Categoría eliminada')
+      return true
     },
 
     // ——— Entrenamientos ———

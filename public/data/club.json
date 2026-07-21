@@ -8,6 +8,11 @@
       "phone": "+56 9 1234 5678"
     }
   },
+  "categories": [
+    { "key": "adulto", "label": "Adulto — Todo Competidor", "short": "Adulto", "icon": "fa-solid fa-basketball", "desc": "Nuestra categoría principal y competitiva. Abierta a todo competidor con ganas de mejorar, entrenar en serio y representar al club en la liga regional." },
+    { "key": "senior", "label": "Senior", "short": "Senior", "icon": "fa-solid fa-medal", "desc": "Para jugadores +35 que mantienen viva la pasión por el básquetbol. Entrenamiento adaptado, competencia sana y mucho compañerismo." },
+    { "key": "femenino", "label": "Femenino", "short": "Femenino", "icon": "fa-solid fa-fire-flame-curved", "desc": "Un espacio para que las jugadoras crezcan, compitan y hagan comunidad. Todos los niveles bienvenidos, del debut a la competencia." }
+  ],
   "cover": {
     "badge": "Club Deportivo y Social",
     "title": "Vuela con el Project",

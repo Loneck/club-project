@@ -84,7 +84,7 @@ function reset(obj) {
 function open(kind, item) {
   modalKind.value = kind
   editingId.value = item ? item.id : null
-  if (kind === 'champ') reset(item ? { ...item } : { name: '', category: 'adulto' })
+  if (kind === 'champ') reset(item ? { ...item } : { name: '', category: store.categoryList[0] ? store.categoryList[0].key : '' })
   if (kind === 'standing') reset(item ? { ...item } : { team: '', pj: 0, pg: 0, pp: 0 })
   if (kind === 'result') reset(item ? { ...item } : { date: '', home: 'Club Project', away: '', hs: 0, as: 0, status: 'programado' })
   modalOpen.value = true
@@ -144,6 +144,7 @@ function updateDraft(v) {
           Tabla de posiciones
           <button class="gv-btn gv-btn--pill gv-btn--tertiary" style="height:30px" @click="open('standing')"><i class="fa-solid fa-plus" style="margin-right:5px;font-size:11px"></i>Agregar equipo</button>
         </div>
+        <div class="table-scroll">
         <div class="gv-table">
           <div class="gv-table__hdr" style="grid-template-columns:1.6fr 60px 60px 60px 64px 90px">
             <div class="gv-table__hcell">Equipo</div><div class="gv-table__hcell">PJ</div><div class="gv-table__hcell">PG</div><div class="gv-table__hcell">PP</div><div class="gv-table__hcell">Pts</div><div class="gv-table__hcell">Acciones</div>
@@ -161,6 +162,7 @@ function updateDraft(v) {
           </div>
           <div v-if="!rankedRows.length" style="padding:16px;font-family:var(--font-family);color:var(--fg-3)">Sin equipos en la tabla.</div>
         </div>
+        </div>
 
         <div style="font-family:var(--font-family);font-weight:600;font-size:13px;color:var(--fg-2);margin:22px 0 8px;display:flex;justify-content:space-between;align-items:center">
           Partidos
@@ -169,7 +171,7 @@ function updateDraft(v) {
         <div style="display:flex;flex-direction:column;gap:8px">
           <div v-for="g in results" :key="g.id" style="display:grid;grid-template-columns:80px 1fr auto auto;gap:12px;align-items:center;padding:10px 12px;border:1px solid var(--stroke-1);border-radius:6px;background:#fff">
             <span style="font-family:var(--font-family);font-weight:600;font-size:12px;color:var(--fg-3)">{{ g.date }}</span>
-            <span style="font-family:var(--font-family);font-weight:600;font-size:14px;color:var(--fg-1)">{{ g.home }} vs {{ g.away }}</span>
+            <span style="font-family:var(--font-family);font-weight:600;font-size:14px;color:var(--fg-1);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ g.home }} vs {{ g.away }}</span>
             <span style="font-family:var(--font-family);font-weight:700;font-size:14px" :style="{ color: g.scoreColor }">{{ g.scoreLabel }}</span>
             <span style="display:flex;gap:4px">
               <button class="gv-iconbtn" @click="open('result', g)"><i class="fa-solid fa-pen" style="font-size:12px;color:var(--accent)"></i></button>
