@@ -39,8 +39,8 @@ function navStyle(key) {
           @click="router.push({ name: 'home' })"
           style="display:flex;align-items:center;gap:11px;background:none;border:0;cursor:pointer;padding:0"
         >
-          <img src="/assets/logo.jpg" alt="Club Project"
-               style="width:40px;height:40px;border-radius:999px;object-fit:cover;box-shadow:0 0 0 1px rgba(255,255,255,.14)" />
+          <img src="/assets/logo.png" alt="Club Project"
+               style="width:42px;height:42px;object-fit:contain" />
           <span style="display:flex;flex-direction:column;line-height:1;text-align:left">
             <span style="font-family:var(--font-family);font-weight:700;font-size:15px;color:#fff;letter-spacing:.02em">PROJECT</span>
             <span style="font-family:var(--font-family);font-weight:600;font-size:10px;color:#7FD3F2;letter-spacing:.06em;text-transform:uppercase;margin-top:3px">Club Deportivo y Social</span>
@@ -69,7 +69,7 @@ function navStyle(key) {
     <footer style="background:#0A0E13;color:rgba(255,255,255,.6);border-top:1px solid rgba(255,255,255,.08)">
       <div style="max-width:1180px;margin:0 auto;padding:32px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap">
         <div style="display:flex;align-items:center;gap:12px">
-          <img src="/assets/logo.jpg" alt="Club Project" style="width:36px;height:36px;border-radius:999px;object-fit:cover" />
+          <img src="/assets/logo.png" alt="Club Project" style="width:38px;height:38px;object-fit:contain" />
           <div>
             <div style="font-family:var(--font-family);font-weight:700;font-size:14px;color:#fff">Club Deportivo y Social Project</div>
             <div style="font-family:var(--font-family);font-size:12px;color:rgba(255,255,255,.5)">Básquetbol · Comunidad · Compromiso</div>

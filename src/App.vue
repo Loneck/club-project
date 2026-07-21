@@ -13,7 +13,7 @@ onMounted(() => {
 <template>
   <router-view v-if="store.loaded" />
   <div v-else class="cdsp-loading">
-    <img src="/assets/logo.jpg" alt="Club Project" />
+    <img src="/assets/logo.png" alt="Club Project" />
   </div>
   <Toast />
 </template>
@@ -27,10 +27,9 @@ onMounted(() => {
   background: var(--bg-1);
 }
 .cdsp-loading img {
-  width: 84px;
-  height: 84px;
-  border-radius: 999px;
-  object-fit: cover;
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
   animation: cdspGlow 1.6s ease-in-out infinite;
 }
 </style>
