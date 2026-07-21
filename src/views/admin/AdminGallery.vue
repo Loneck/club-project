@@ -38,6 +38,9 @@ function save() {
 function updateDraft(v) {
   Object.assign(draft, v)
 }
+function remove(id) {
+  if (window.confirm('¿Eliminar esta imagen?')) store.deleteGalleryImage(id)
+}
 </script>
 
 <template>
@@ -59,7 +62,7 @@ function updateDraft(v) {
           <span style="font-family:var(--font-family);font-size:13px;color:var(--fg-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ img.caption || 'Sin descripción' }}</span>
           <span style="display:flex;gap:4px;flex-shrink:0">
             <button class="gv-iconbtn" @click="openEdit(img)"><i class="fa-solid fa-pen" style="font-size:12px;color:var(--accent)"></i></button>
-            <button class="gv-iconbtn" @click="store.deleteGalleryImage(img.id)"><i class="fa-solid fa-trash" style="font-size:12px;color:var(--danger)"></i></button>
+            <button class="gv-iconbtn" @click="remove(img.id)"><i class="fa-solid fa-trash" style="font-size:12px;color:var(--danger)"></i></button>
           </span>
         </div>
       </div>

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useClubStore } from '@/stores/club'
 import { publish, getIdentity, downloadJson, LOGOUT_URL } from '@/services/publish'
@@ -15,6 +15,7 @@ const adminNav = [
   { name: 'admin-jugadores', label: 'Jugadores', icon: 'fa-solid fa-users' },
   { name: 'admin-campeonatos', label: 'Campeonatos', icon: 'fa-solid fa-trophy' },
   { name: 'admin-galeria', label: 'Galería', icon: 'fa-solid fa-images' },
+  { name: 'admin-contacto', label: 'Contacto', icon: 'fa-solid fa-address-card' },
 ]
 
 const titles = {
@@ -24,6 +25,7 @@ const titles = {
   'admin-jugadores': 'Jugadores',
   'admin-campeonatos': 'Campeonatos',
   'admin-galeria': 'Galería',
+  'admin-contacto': 'Contacto',
 }
 const title = computed(() => titles[route.name] || 'Administración')
 
@@ -41,6 +43,16 @@ onMounted(async () => {
   const id = await getIdentity()
   if (id && id.email) email.value = id.email
 })
+
+// Avisar si se intenta cerrar/recargar con cambios sin publicar.
+function beforeUnload(e) {
+  if (store.dirty) {
+    e.preventDefault()
+    e.returnValue = ''
+  }
+}
+onMounted(() => window.addEventListener('beforeunload', beforeUnload))
+onUnmounted(() => window.removeEventListener('beforeunload', beforeUnload))
 
 // ——— Publicación ———
 const publishing = ref(false)

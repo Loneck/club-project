@@ -36,6 +36,14 @@ function navTo(to) {
   router.push(to)
   mobileOpen.value = false
 }
+
+const igHandle = computed(() => store.contactInfo.instagram || '')
+function igUrl(handle) {
+  const s = String(handle || '').trim()
+  if (!s) return '#'
+  if (/^https?:\/\//i.test(s)) return s
+  return 'https://instagram.com/' + s.replace(/^@/, '')
+}
 </script>
 
 <template>
@@ -98,10 +106,20 @@ function navTo(to) {
             <div style="font-family:var(--font-family);font-size:12px;color:rgba(255,255,255,.5)">Básquetbol · Comunidad · Compromiso</div>
           </div>
         </div>
-        <button
-          @click="router.push({ name: 'admin-portada' })"
-          style="display:inline-flex;align-items:center;gap:8px;background:none;border:1px solid rgba(255,255,255,.18);border-radius:999px;color:rgba(255,255,255,.75);font-family:var(--font-family);font-weight:600;font-size:13px;padding:8px 16px;cursor:pointer"
-        ><i class="fa-solid fa-gear" style="font-size:12px"></i>Panel de administración</button>
+        <div style="display:flex;align-items:center;gap:14px">
+          <a
+            v-if="igHandle"
+            :href="igUrl(igHandle)"
+            target="_blank"
+            rel="noopener"
+            aria-label="Instagram del club"
+            style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:999px;border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.75);font-size:17px"
+          ><i class="fa-brands fa-instagram"></i></a>
+          <button
+            @click="router.push({ name: 'admin-portada' })"
+            style="display:inline-flex;align-items:center;gap:8px;background:none;border:1px solid rgba(255,255,255,.18);border-radius:999px;color:rgba(255,255,255,.75);font-family:var(--font-family);font-weight:600;font-size:13px;padding:8px 16px;cursor:pointer"
+          ><i class="fa-solid fa-gear" style="font-size:12px"></i>Panel de administración</button>
+        </div>
       </div>
     </footer>
   </div>

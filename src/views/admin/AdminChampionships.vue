@@ -112,6 +112,17 @@ function save() {
 function updateDraft(v) {
   Object.assign(draft, v)
 }
+function removeChamp() {
+  if (activeChamp.value && window.confirm(`¿Eliminar el campeonato "${activeChamp.value.name}"? Se borran su tabla y partidos.`)) {
+    store.deleteChampionship(activeChamp.value.id)
+  }
+}
+function removeStanding(id) {
+  if (window.confirm('¿Eliminar este equipo de la tabla?')) store.deleteStanding(activeId.value, id)
+}
+function removeResult(id) {
+  if (window.confirm('¿Eliminar este partido?')) store.deleteResult(activeId.value, id)
+}
 </script>
 
 <template>
@@ -140,7 +151,7 @@ function updateDraft(v) {
           <div style="font-family:var(--font-family);font-weight:700;font-size:18px;color:var(--fg-1)">{{ activeChamp.name }}</div>
           <div style="display:flex;gap:8px">
             <button class="gv-btn gv-btn--pill gv-btn--secondary" style="height:32px" @click="open('champ', activeChamp)">Editar torneo</button>
-            <button class="gv-btn gv-btn--pill gv-btn--destructive-secondary" style="height:32px" @click="store.deleteChampionship(activeChamp.id)">Eliminar</button>
+            <button class="gv-btn gv-btn--pill gv-btn--destructive-secondary" style="height:32px" @click="removeChamp">Eliminar</button>
           </div>
         </div>
 
@@ -161,7 +172,7 @@ function updateDraft(v) {
             <div class="gv-table__cell" style="font-weight:700;color:var(--accent)">{{ r.pts }}</div>
             <div class="gv-table__cell" style="gap:6px">
               <button class="gv-iconbtn" @click="open('standing', r)"><i class="fa-solid fa-pen" style="font-size:13px;color:var(--accent)"></i></button>
-              <button class="gv-iconbtn" @click="store.deleteStanding(activeChamp.id, r.id)"><i class="fa-solid fa-trash" style="font-size:13px;color:var(--danger)"></i></button>
+              <button class="gv-iconbtn" @click="removeStanding(r.id)"><i class="fa-solid fa-trash" style="font-size:13px;color:var(--danger)"></i></button>
             </div>
           </div>
           <div v-if="!rankedRows.length" style="padding:16px;font-family:var(--font-family);color:var(--fg-3)">Sin equipos en la tabla.</div>
@@ -179,7 +190,7 @@ function updateDraft(v) {
             <span style="font-family:var(--font-family);font-weight:700;font-size:14px" :style="{ color: g.scoreColor }">{{ g.scoreLabel }}</span>
             <span style="display:flex;gap:4px">
               <button class="gv-iconbtn" @click="open('result', g)"><i class="fa-solid fa-pen" style="font-size:12px;color:var(--accent)"></i></button>
-              <button class="gv-iconbtn" @click="store.deleteResult(activeChamp.id, g.id)"><i class="fa-solid fa-trash" style="font-size:12px;color:var(--danger)"></i></button>
+              <button class="gv-iconbtn" @click="removeResult(g.id)"><i class="fa-solid fa-trash" style="font-size:12px;color:var(--danger)"></i></button>
             </span>
           </div>
           <div v-if="!results.length" style="font-family:var(--font-family);color:var(--fg-3);padding:4px 0">Sin partidos cargados.</div>

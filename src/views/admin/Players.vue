@@ -50,6 +50,9 @@ function save() {
 function updateDraft(v) {
   Object.assign(draft, v)
 }
+function remove(id) {
+  if (window.confirm('¿Eliminar este jugador?')) store.deletePlayer(id)
+}
 </script>
 
 <template>
@@ -77,7 +80,7 @@ function updateDraft(v) {
         <div class="gv-table__cell">{{ p.catLabel }}</div>
         <div class="gv-table__cell" style="gap:6px">
           <button class="gv-iconbtn" @click="openEdit(p)" title="Editar"><i class="fa-solid fa-pen" style="font-size:13px;color:var(--accent)"></i></button>
-          <button class="gv-iconbtn" @click="store.deletePlayer(p.id)" title="Eliminar"><i class="fa-solid fa-trash" style="font-size:13px;color:var(--danger)"></i></button>
+          <button class="gv-iconbtn" @click="remove(p.id)" title="Eliminar"><i class="fa-solid fa-trash" style="font-size:13px;color:var(--danger)"></i></button>
         </div>
       </div>
       <div v-if="!rows.length" style="padding:16px;font-family:var(--font-family);color:var(--fg-3)">No hay jugadores en esta categoría.</div>

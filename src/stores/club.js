@@ -159,6 +159,17 @@ export const useClubStore = defineStore('club', {
       this.db.settings.heroVariant = v
       this.persist()
     },
+    setVenue(val) {
+      if (!this.db.settings) this.db.settings = {}
+      this.db.settings.venue = val
+      this.persist()
+    },
+    setContactField(field, val) {
+      if (!this.db.settings) this.db.settings = {}
+      if (!this.db.settings.contact) this.db.settings.contact = {}
+      this.db.settings.contact[field] = val
+      this.persist()
+    },
 
     // ——— Categorías ———
     // Cuántos elementos referencian una categoría (para bloquear su eliminación).

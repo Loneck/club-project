@@ -15,6 +15,7 @@ const routes = [
       { path: 'campeonatos', name: 'campeonatos', component: () => import('@/views/public/Championships.vue') },
       { path: 'galeria', name: 'galeria', component: () => import('@/views/public/Gallery.vue') },
       { path: 'contacto', name: 'contacto', component: () => import('@/views/public/Contact.vue') },
+      { path: ':pathMatch(.*)*', name: 'notfound', component: () => import('@/views/public/NotFound.vue') },
     ],
   },
   {
@@ -28,9 +29,9 @@ const routes = [
       { path: 'jugadores', name: 'admin-jugadores', component: () => import('@/views/admin/Players.vue') },
       { path: 'campeonatos', name: 'admin-campeonatos', component: () => import('@/views/admin/AdminChampionships.vue') },
       { path: 'galeria', name: 'admin-galeria', component: () => import('@/views/admin/AdminGallery.vue') },
+      { path: 'contacto', name: 'admin-contacto', component: () => import('@/views/admin/AdminContact.vue') },
     ],
   },
-  { path: '/:pathMatch(.*)*', redirect: '/' },
 ]
 
 const router = createRouter({

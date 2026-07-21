@@ -39,6 +39,9 @@ function save() {
 function updateDraft(v) {
   Object.assign(draft, v)
 }
+function remove(id) {
+  if (window.confirm('¿Eliminar este entrenamiento?')) store.deleteTraining(id)
+}
 </script>
 
 <template>
@@ -59,7 +62,7 @@ function updateDraft(v) {
         <div class="gv-table__cell">{{ t.coach }}</div>
         <div class="gv-table__cell" style="gap:6px">
           <button class="gv-iconbtn" @click="openEdit(t)" title="Editar"><i class="fa-solid fa-pen" style="font-size:13px;color:var(--accent)"></i></button>
-          <button class="gv-iconbtn" @click="store.deleteTraining(t.id)" title="Eliminar"><i class="fa-solid fa-trash" style="font-size:13px;color:var(--danger)"></i></button>
+          <button class="gv-iconbtn" @click="remove(t.id)" title="Eliminar"><i class="fa-solid fa-trash" style="font-size:13px;color:var(--danger)"></i></button>
         </div>
       </div>
       <div v-if="!rows.length" style="padding:16px;font-family:var(--font-family);color:var(--fg-3)">No hay entrenamientos cargados.</div>

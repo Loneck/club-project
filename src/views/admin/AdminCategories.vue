@@ -40,6 +40,9 @@ function save() {
 function updateDraft(v) {
   Object.assign(draft, v)
 }
+function remove(key) {
+  if (window.confirm('¿Eliminar esta categoría?')) store.deleteCategory(key)
+}
 </script>
 
 <template>
@@ -64,7 +67,7 @@ function updateDraft(v) {
         <div class="gv-table__cell" style="color:var(--fg-3);font-size:12px">{{ c.usage.players }} jug · {{ c.usage.trainings }} entren · {{ c.usage.championships }} camp</div>
         <div class="gv-table__cell" style="gap:6px">
           <button class="gv-iconbtn" @click="openEdit(c)" title="Editar"><i class="fa-solid fa-pen" style="font-size:13px;color:var(--accent)"></i></button>
-          <button class="gv-iconbtn" @click="store.deleteCategory(c.key)" title="Eliminar"><i class="fa-solid fa-trash" style="font-size:13px;color:var(--danger)"></i></button>
+          <button class="gv-iconbtn" @click="remove(c.key)" title="Eliminar"><i class="fa-solid fa-trash" style="font-size:13px;color:var(--danger)"></i></button>
         </div>
       </div>
       <div v-if="!rows.length" style="padding:16px;font-family:var(--font-family);color:var(--fg-3)">No hay categorías. Crea la primera.</div>

@@ -5,6 +5,16 @@ import { useClubStore } from '@/stores/club'
 const store = useClubStore()
 const contact = computed(() => store.contactInfo)
 
+function igUrl(handle) {
+  const s = String(handle || '').trim()
+  if (!s) return '#'
+  if (/^https?:\/\//i.test(s)) return s
+  return 'https://instagram.com/' + s.replace(/^@/, '')
+}
+function telHref(phone) {
+  return String(phone || '').replace(/[^\d+]/g, '')
+}
+
 const joinSteps = [
   { n: 1, text: 'Escríbenos por Instagram o correo, o simplemente llega a un entrenamiento.' },
   { n: 2, text: 'Participa de una clase de prueba gratuita con la categoría que elijas.' },
@@ -56,9 +66,9 @@ function submit() {
         </div>
         <div style="background:#0E141B;border-radius:6px;padding:18px;color:#fff;display:flex;flex-direction:column;gap:12px">
           <div style="display:flex;align-items:center;gap:12px"><i class="fa-solid fa-location-dot" style="width:18px;color:#7FD3F2"></i><span style="font-family:var(--font-family);font-size:14px">{{ store.venue }}</span></div>
-          <div v-if="contact.email" style="display:flex;align-items:center;gap:12px"><i class="fa-solid fa-envelope" style="width:18px;color:#7FD3F2"></i><span style="font-family:var(--font-family);font-size:14px">{{ contact.email }}</span></div>
-          <div v-if="contact.instagram" style="display:flex;align-items:center;gap:12px"><i class="fa-brands fa-instagram" style="width:18px;color:#7FD3F2"></i><span style="font-family:var(--font-family);font-size:14px">{{ contact.instagram }}</span></div>
-          <div v-if="contact.phone" style="display:flex;align-items:center;gap:12px"><i class="fa-solid fa-phone" style="width:18px;color:#7FD3F2"></i><span style="font-family:var(--font-family);font-size:14px">{{ contact.phone }}</span></div>
+          <div v-if="contact.email" style="display:flex;align-items:center;gap:12px"><i class="fa-solid fa-envelope" style="width:18px;color:#7FD3F2"></i><a :href="'mailto:' + contact.email" style="font-family:var(--font-family);font-size:14px;color:#fff;text-decoration:none">{{ contact.email }}</a></div>
+          <div v-if="contact.instagram" style="display:flex;align-items:center;gap:12px"><i class="fa-brands fa-instagram" style="width:18px;color:#7FD3F2"></i><a :href="igUrl(contact.instagram)" target="_blank" rel="noopener" style="font-family:var(--font-family);font-size:14px;color:#fff;text-decoration:none">{{ contact.instagram }}</a></div>
+          <div v-if="contact.phone" style="display:flex;align-items:center;gap:12px"><i class="fa-solid fa-phone" style="width:18px;color:#7FD3F2"></i><a :href="'tel:' + telHref(contact.phone)" style="font-family:var(--font-family);font-size:14px;color:#fff;text-decoration:none">{{ contact.phone }}</a></div>
         </div>
       </div>
 
