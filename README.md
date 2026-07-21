@@ -69,26 +69,43 @@ y el topbar muestra "Cambios sin publicar". **Descartar** vuelve al último esta
 
 ## Publicación y despliegue (sin base de datos)
 
-1. Sube este repo a GitHub.
-2. Conéctalo a un hosting estático con redeploy automático: **Cloudflare Pages** o **Netlify**
-   (recomendados; gratis). Configuración de build: `npm run build`, directorio de salida `dist`.
-3. En el dashboard, primer **Publicar** → se pide la configuración una sola vez:
-   - **owner**: tu usuario/organización de GitHub.
-   - **repo**: nombre del repositorio.
-   - **branch**: `main`.
-   - **ruta**: `public/data/club.json`.
-   - **token**: un GitHub *fine-grained PAT* con permiso *Contents: Read and write* sobre este repo.
+Hosting: **Cloudflare Pages** (gratis). Build command `npm run build`, salida `dist`.
+La carpeta `functions/` se despliega automáticamente como Cloudflare Pages Functions.
 
-   La config y el token se guardan **solo en el navegador del administrador** (`localStorage`).
-   Al publicar, se hace commit del JSON y el hosting regenera el sitio en ~1 minuto.
+Al **Publicar**, el dashboard llama a `POST /api/publish` (la función serverless), que hace
+commit de `public/data/club.json` con el token de GitHub y dispara el redeploy (~1 min).
 
-Sin configurar el token, el botón **Descargar JSON** del modal permite bajar el `club.json`
-y subirlo manualmente al repo.
+### Seguridad del dashboard
 
-> **Nota de seguridad:** guardar el PAT en el navegador es aceptable para un único administrador.
-> Si más adelante varias personas administran, conviene reemplazar `src/services/publish.js`
-> por una pequeña función serverless (Cloudflare/Netlify Functions) que guarde el token del
-> lado del servidor y exponga un endpoint de publicación autenticado.
+En un sitio estático, esconder el `/admin` con una contraseña en JS **no es seguridad real**.
+La protección real es doble:
+
+1. **El token de GitHub nunca está en el navegador** — vive como secreto de servidor en la
+   función `functions/api/publish.js` (variable `GITHUB_TOKEN`). Editar en `/admin` solo cambia
+   una copia local; sin pasar por la función no se publica nada.
+2. **Cloudflare Access** protege `/admin*` y `/api/*`: exige login por correo (OTP o Google)
+   contra una lista de correos autorizados. La función además valida el JWT de Access.
+
+### Setup en Cloudflare (una vez)
+
+1. **GitHub**: crea el repo y súbelo. Genera un *fine-grained PAT* con **Contents: Read and write**
+   restringido a este repo.
+2. **Pages**: crea un proyecto conectado al repo. Build `npm run build`, salida `dist`.
+3. **Variables de entorno del proyecto Pages** (Settings → Environment variables):
+   - `GITHUB_TOKEN` (marcar como *Secret*), `GITHUB_OWNER`, `GITHUB_REPO`,
+     `GITHUB_BRANCH` (`main`), `FILE_PATH` (`public/data/club.json`).
+   - `ALLOWED_EMAILS` = correos autorizados separados por coma.
+   - Tras crear la app de Access (paso 4): `CF_ACCESS_TEAM_DOMAIN` (ej `miclub.cloudflareaccess.com`)
+     y `CF_ACCESS_AUD` (Application Audience tag) para validar el JWT.
+4. **Cloudflare Access** (Zero Trust → Access → Applications): agrega una *Self-hosted app*
+   cubriendo `tudominio.pages.dev/admin*` y `tudominio.pages.dev/api/*`, con una política
+   *Allow* por *Emails* (los del club) y login por OTP/Google. Copia el **AUD** al env del paso 3.
+
+El botón **Descargar JSON** (ícono ⬇ en el dashboard) baja un respaldo del contenido para
+subirlo a mano al repo si hiciera falta.
+
+> Para probar la función localmente: `npx wrangler pages dev -- npm run dev` (o `wrangler pages dev dist`).
+> En `npm run dev` a secas, publicar avisa que solo funciona en el sitio desplegado.
 
 ## Formulario de contacto
 
@@ -99,14 +116,16 @@ servicio de formularios (p. ej. Formspree) sin cambiar el resto del sitio.
 ## Estructura
 
 ```
+functions/
+  api/publish.js        # Cloudflare Pages Function: commit a GitHub (token server-side) + Access JWT
 public/
   data/club.json        # contenido (fuente de verdad, versionado)
-  assets/logo.jpg
+  assets/logo.png
   fonts/Nunito-*.ttf
 src/
   styles/               # tokens.css + platform.css (design system)
   stores/club.js        # estado Pinia + CRUD + cálculo de tablas
-  services/publish.js   # publicación a Git (GitHub Contents API) + descarga
+  services/publish.js   # cliente: llama a /api/publish, identidad Access, descarga respaldo
   router/index.js
   components/            # EntityModal, Toast
   views/public/          # sitio público

@@ -24,8 +24,8 @@ publicar hace commit vía la API de GitHub; el hosting (Cloudflare Pages / Netli
 2. Si hay copia de trabajo en `localStorage` (`cdsp_working_v1`), esa es el `db` activo y se
    marca `dirty`.
 3. Las mutaciones CRUD del store llaman `persist()` (guarda en localStorage + recalcula `dirty`).
-4. **Publicar** (`AdminLayout.vue`) → `publish.js` `publishToGit()` hace PUT a la Contents API →
-   `store.markPublished()` limpia la copia de trabajo y reasigna `baseline`.
+4. **Publicar** (`AdminLayout.vue`) → `publish.js` `publish()` hace `POST /api/publish` (función
+   serverless) → `store.markPublished()` limpia la copia de trabajo y reasigna `baseline`.
 5. **Descartar** vuelve `db` a `baseline`.
 
 `localStorage` es solo copia de trabajo del administrador; NO es el mecanismo de compartición.
@@ -41,12 +41,18 @@ El contenido público se comparte únicamente vía el `club.json` commiteado.
 - El modal de formularios es genérico: `EntityModal.vue` guiado por un arreglo `fields`
   (`{ key, label, type: 'text'|'number'|'select', options?, placeholder? }`).
 
-## Publicación (`src/services/publish.js`)
+## Publicación y seguridad
 
-- Config en `localStorage` (`cdsp_publish_cfg_v1`): `{ owner, repo, branch, path, token }`.
-- Usa GitHub Contents API: GET para obtener el `sha` actual, PUT para commitear (contenido en
-  base64 UTF-8).
-- El token (PAT) queda en el navegador del admin. Para multi-admin, migrar a función serverless.
+- **Cliente** (`src/services/publish.js`): `publish()` hace `POST /api/publish` con `{ content }`.
+  `getIdentity()` lee `/cdn-cgi/access/get-identity` (email logueado). `downloadJson()` = respaldo.
+  NO hay token en el navegador. En dev local `/api/publish` no existe (Vite devuelve HTML) →
+  `publish()` detecta content-type no-JSON y avisa.
+- **Servidor** (`functions/api/publish.js`, Cloudflare Pages Function): guarda `GITHUB_TOKEN` como
+  secreto, valida el JWT de Cloudflare Access (si `CF_ACCESS_TEAM_DOMAIN`+`CF_ACCESS_AUD` están
+  seteados) y el `ALLOWED_EMAILS`, luego GET sha + PUT a la Contents API (base64 UTF-8).
+- **Access**: Cloudflare Access protege `/admin*` y `/api/*` (login por correo). Ver README para
+  el setup (env vars + Application/AUD). El UI del dashboard no tiene auth propia: la seguridad
+  vive en Access + el token server-side.
 
 ## Comandos
 

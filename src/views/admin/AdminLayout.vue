@@ -1,8 +1,8 @@
 <script setup>
-import { ref, reactive, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useClubStore } from '@/stores/club'
-import { getConfig, saveConfig, isConfigured, publishToGit, downloadJson } from '@/services/publish'
+import { publish, getIdentity, downloadJson, LOGOUT_URL } from '@/services/publish'
 
 const store = useClubStore()
 const route = useRoute()
@@ -25,38 +25,38 @@ const titles = {
 }
 const title = computed(() => titles[route.name] || 'Administración')
 
+// ——— Identidad (Cloudflare Access) ———
+const email = ref('')
+const initials = computed(() => {
+  const e = email.value
+  if (!e) return 'AD'
+  return e.slice(0, 2).toUpperCase()
+})
+onMounted(async () => {
+  const id = await getIdentity()
+  if (id && id.email) email.value = id.email
+})
+
 // ——— Publicación ———
 const publishing = ref(false)
-const showConfig = ref(false)
-const cfg = reactive(getConfig())
 
 async function doPublish() {
-  if (!isConfigured()) {
-    showConfig.value = true
-    return
-  }
   publishing.value = true
   try {
-    const { commitUrl } = await publishToGit(store.exportJson(), 'Actualiza contenido del sitio (dashboard)')
+    const { commitUrl } = await publish(store.exportJson(), 'Actualiza contenido del sitio (dashboard)')
     store.markPublished()
     store.showToast('Publicado. El sitio se actualizará en ~1 min.')
     if (commitUrl) console.info('Commit:', commitUrl)
   } catch (e) {
-    store.showToast('Error al publicar: ' + e.message)
+    store.showToast(e.message)
   } finally {
     publishing.value = false
   }
 }
 
-async function saveConfigAndPublish() {
-  saveConfig({ ...cfg })
-  showConfig.value = false
-  await doPublish()
-}
-
-function downloadFallback() {
+function descargar() {
   downloadJson(store.exportJson(), 'club.json')
-  store.showToast('Descargado. Súbelo a public/data/ en tu repo.')
+  store.showToast('JSON descargado.')
 }
 </script>
 
@@ -64,7 +64,7 @@ function downloadFallback() {
   <div class="gv-shell" style="min-height:100vh">
     <aside class="gv-sidebar">
       <div class="gv-sidebar__logo" style="background:#0E141B;display:flex;align-items:center;gap:10px">
-        <img src="/assets/logo.jpg" alt="Club Project" style="width:34px;height:34px;border-radius:999px;object-fit:cover" />
+        <img src="/assets/logo.png" alt="Club Project" style="width:36px;height:36px;object-fit:contain" />
         <div>
           <div style="font-family:var(--font-family);font-weight:700;font-size:13px;color:#fff">PROJECT</div>
           <div style="font-family:var(--font-family);font-weight:600;font-size:10px;color:#7FD3F2">Administración</div>
@@ -79,8 +79,9 @@ function downloadFallback() {
           @click="router.push({ name: a.name })"
         ><i :class="a.icon"></i>{{ a.label }}</button>
       </nav>
-      <div style="margin-top:auto;padding:8px">
+      <div style="margin-top:auto;padding:8px;display:flex;flex-direction:column;gap:2px">
         <button class="gv-navitem" @click="router.push({ name: 'home' })"><i class="fa-solid fa-arrow-left"></i>Ver sitio público</button>
+        <a v-if="email" class="gv-navitem" :href="LOGOUT_URL"><i class="fa-solid fa-right-from-bracket"></i>Cerrar sesión</a>
       </div>
     </aside>
 
@@ -91,6 +92,9 @@ function downloadFallback() {
           <span v-if="store.dirty" style="font-family:var(--font-family);font-size:12px;font-weight:600;color:var(--color-highlight-main);display:inline-flex;align-items:center;gap:6px">
             <i class="fa-solid fa-circle" style="font-size:8px"></i>Cambios sin publicar
           </span>
+          <button class="gv-btn gv-btn--pill gv-btn--tertiary" @click="descargar" style="height:34px" title="Descargar respaldo del contenido">
+            <i class="fa-solid fa-download" style="font-size:12px"></i>
+          </button>
           <button
             class="gv-btn gv-btn--pill gv-btn--secondary"
             :disabled="!store.dirty"
@@ -106,7 +110,7 @@ function downloadFallback() {
             <i class="fa-solid" :class="publishing ? 'fa-spinner fa-spin' : 'fa-cloud-arrow-up'" style="margin-right:6px;font-size:12px"></i>
             {{ publishing ? 'Publicando…' : 'Publicar' }}
           </button>
-          <div class="gv-avatar">AD</div>
+          <div class="gv-avatar" :title="email || 'Administrador'">{{ initials }}</div>
         </div>
       </div>
 
@@ -114,33 +118,5 @@ function downloadFallback() {
         <router-view />
       </div>
     </main>
-
-    <!-- Modal de configuración de publicación -->
-    <div v-if="showConfig" class="gv-modal-overlay" @click="showConfig = false">
-      <div class="gv-modal" style="width:520px" @click.stop>
-        <div class="gv-modal__header">
-          <div class="gv-modal__title">Configurar publicación</div>
-          <div class="gv-modal__close" @click="showConfig = false"><i class="fa-solid fa-xmark"></i></div>
-        </div>
-        <div class="gv-modal__body">
-          <div class="gv-banner" style="border-color:var(--accent);background:var(--color-info-surface)">
-            <div class="gv-banner__icon"><i class="fa-solid fa-circle-info" style="color:var(--accent)"></i></div>
-            Los cambios se guardan como un commit en tu repositorio Git. Necesitas un token de acceso con permiso de escritura al repo. Se guarda solo en este navegador.
-          </div>
-          <div class="gv-field"><label class="gv-label">Usuario / organización (owner)</label><input class="gv-input" v-model="cfg.owner" placeholder="ej: leonel" /></div>
-          <div class="gv-field"><label class="gv-label">Repositorio</label><input class="gv-input" v-model="cfg.repo" placeholder="ej: club-project" /></div>
-          <div class="gv-field"><label class="gv-label">Rama</label><input class="gv-input" v-model="cfg.branch" placeholder="main" /></div>
-          <div class="gv-field"><label class="gv-label">Ruta del archivo</label><input class="gv-input" v-model="cfg.path" placeholder="public/data/club.json" /></div>
-          <div class="gv-field"><label class="gv-label">Token de acceso (GitHub PAT)</label><input class="gv-input" type="password" v-model="cfg.token" placeholder="github_pat_..." /></div>
-        </div>
-        <div class="gv-modal__footer" style="justify-content:space-between">
-          <button class="gv-btn gv-btn--pill gv-btn--tertiary" @click="downloadFallback">Descargar JSON</button>
-          <div style="display:flex;gap:10px">
-            <button class="gv-btn gv-btn--pill gv-btn--tertiary" @click="showConfig = false">Cancelar</button>
-            <button class="gv-btn gv-btn--pill gv-btn--primary" @click="saveConfigAndPublish">Guardar y publicar</button>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
