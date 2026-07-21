@@ -218,11 +218,18 @@ export const useClubStore = defineStore('club', {
 
     // ——— Entrenamientos ———
     saveTraining(item) {
+      const clean = {
+        category: item.category,
+        days: item.days,
+        time: item.time,
+        place: item.place,
+        coach: item.coach,
+      }
       if (item.id) {
         const i = this.db.trainings.findIndex((x) => x.id === item.id)
-        if (i >= 0) this.db.trainings[i] = { ...this.db.trainings[i], ...item }
+        if (i >= 0) this.db.trainings[i] = { id: item.id, ...clean }
       } else {
-        this.db.trainings.push({ id: uid('t'), ...item })
+        this.db.trainings.push({ id: uid('t'), ...clean })
       }
       this.persist()
       this.showToast('Entrenamiento guardado')
@@ -235,12 +242,17 @@ export const useClubStore = defineStore('club', {
 
     // ——— Jugadores ———
     savePlayer(item) {
-      const p = { ...item, number: +item.number || 0 }
-      if (p.id) {
-        const i = this.db.players.findIndex((x) => x.id === p.id)
-        if (i >= 0) this.db.players[i] = { ...this.db.players[i], ...p }
+      const clean = {
+        name: item.name,
+        number: +item.number || 0,
+        position: item.position,
+        category: item.category,
+      }
+      if (item.id) {
+        const i = this.db.players.findIndex((x) => x.id === item.id)
+        if (i >= 0) this.db.players[i] = { id: item.id, ...clean }
       } else {
-        this.db.players.push({ id: uid('p'), ...p })
+        this.db.players.push({ id: uid('p'), ...clean })
       }
       this.persist()
       this.showToast('Jugador guardado')
@@ -321,11 +333,12 @@ export const useClubStore = defineStore('club', {
     // ——— Galería ———
     saveGalleryImage(item) {
       if (!this.db.gallery) this.db.gallery = []
+      const clean = { src: item.src, caption: item.caption || '' }
       if (item.id) {
         const i = this.db.gallery.findIndex((x) => x.id === item.id)
-        if (i >= 0) this.db.gallery[i] = { ...this.db.gallery[i], ...item }
+        if (i >= 0) this.db.gallery[i] = { id: item.id, ...clean }
       } else {
-        this.db.gallery.push({ id: uid('g'), src: item.src, caption: item.caption || '' })
+        this.db.gallery.push({ id: uid('g'), ...clean })
       }
       this.persist()
       this.showToast('Imagen guardada')
