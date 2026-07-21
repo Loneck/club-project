@@ -1,0 +1,148 @@
+/* GeoVictoria Design System — Colors & Type
+ * Fuente: design-system.json (token set estricto). Font: Nunito.
+ * Rutas de fuentes ajustadas a /fonts/ (carpeta public).
+ */
+
+@font-face {
+  font-family: "Nunito";
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/Nunito-Light.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Nunito";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/Nunito-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Nunito";
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/Nunito-SemiBold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Nunito";
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/Nunito-Bold.ttf") format("truetype");
+}
+
+:root {
+  /* COLORS — Principal */
+  --color-primary-default: #009BD9;
+  --color-primary-hover: #0082B6;
+  --color-primary-highlight: #00AFF2;
+  --color-primary-subtle: #E9EDF6;
+
+  --color-highlight-main: #FFBD00;
+
+  --color-text-highlight: #323232;
+  --color-text-primary: #5A6366;
+  --color-text-disabled: #B2BBBE;
+  --color-strokes: #D6DDDF;
+  --color-surface-table-header: #F2F2F2;
+  --color-surface-bg: #F7FAFB;
+  --color-surface-card: #FFFFFF;
+
+  --color-status-unplanned: #FFF3D2;
+  --color-status-absence: #FCA68D;
+  --color-status-rest: #BFDFFF;
+
+  --color-error-main: #D14545;
+  --color-error-icon: #FF4B4B;
+  --color-error-surface: #FAEBE7;
+  --color-success-main: #2B9500;
+  --color-success-icon: #268700;
+  --color-success-surface: #ECF8EC;
+  --color-warning-main: #FFDA6F;
+  --color-info-main: #BFDFFF;
+  --color-info-surface: #F7FAFF;
+
+  --color-warning-banner-surface: #FFFCF5;
+  --color-warning-banner-stroke: #FFBD00;
+  --color-error-banner-surface: #FDF4F5;
+  --color-error-banner-stroke: #FF4B4B;
+  --color-paginator-stroke: #ABD5FF;
+
+  /* SEMANTIC ALIASES */
+  --fg-1: var(--color-text-highlight);
+  --fg-2: var(--color-text-primary);
+  --fg-3: var(--color-text-disabled);
+  --bg-1: var(--color-surface-bg);
+  --bg-2: var(--color-surface-card);
+  --bg-3: var(--color-surface-table-header);
+  --stroke-1: var(--color-strokes);
+  --accent: var(--color-primary-default);
+  --accent-hover-fill: var(--color-primary-hover);
+  --accent-subtle: var(--color-primary-subtle);
+  --danger: var(--color-error-main);
+
+  /* SPACING */
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-64: 64px;
+
+  /* RADIUS */
+  --radius-none: 0px;
+  --radius-xs: 2px;
+  --radius-s: 4px;
+  --radius-m: 6px;
+  --radius-l: 12px;
+  --radius-full: 999px;
+
+  /* TYPOGRAPHY */
+  --font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  --fs-tiny: 10px;
+  --fs-caption: 12px;
+  --fs-body: 14px;
+  --fs-h2: 16px;
+  --fs-h1: 18px;
+  --fs-h1-large: 20px;
+  --fs-display: 32px;
+
+  --lh-default: 20px;
+  --lh-display: 32px;
+
+  --fw-regular: 400;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  --tracking: -0.03em;
+
+  /* SHADOWS */
+  --shadow-modal: 0px 1.66px 8px 0px rgba(0, 0, 0, 0.1);
+  --shadow-btn-primary-hover: 0px 0px 16px 0.2px rgba(0, 155, 217, 0.4);
+  --shadow-btn-destructive-hover: 0px 0px 16px 0.2px rgba(209, 69, 69, 0.4);
+  --shadow-input-active: 0px 0px 0px 4px rgba(0, 155, 217, 0.25);
+
+  /* COMPONENT HEIGHTS */
+  --h-button-pill: 36px;
+  --h-button-square: 28px;
+  --h-input: 28px;
+  --h-dropdown: 28px;
+  --h-row-dense: 44px;
+  --h-row-comfy: 56px;
+}
+
+html, body {
+  font-family: var(--font-family);
+  font-size: var(--fs-body);
+  line-height: var(--lh-default);
+  font-weight: var(--fw-regular);
+  letter-spacing: var(--tracking);
+  color: var(--fg-2);
+  background: var(--bg-1);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

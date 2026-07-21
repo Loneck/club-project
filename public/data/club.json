@@ -1,0 +1,93 @@
+{
+  "settings": {
+    "heroVariant": "split",
+    "venue": "Gimnasio Municipal Project",
+    "contact": {
+      "email": "contacto@clubproject.cl",
+      "instagram": "@club.project.bsk",
+      "phone": "+56 9 1234 5678"
+    }
+  },
+  "cover": {
+    "badge": "Club Deportivo y Social",
+    "title": "Vuela con el Project",
+    "subtitle": "Somos una comunidad de básquetbol para toda la familia. Entrenamientos para categorías Adulto, Senior y Femenino, con espíritu competitivo y cercano."
+  },
+  "membership": { "fee": 20000 },
+  "trainings": [
+    { "id": "t1", "category": "adulto", "days": "Martes y Jueves", "time": "20:00–22:00", "place": "Gimnasio Municipal Project", "coach": "Rodrigo Fuentes" },
+    { "id": "t2", "category": "senior", "days": "Martes y Jueves", "time": "20:00–22:00", "place": "Gimnasio Municipal Project", "coach": "Óscar Villagrán" },
+    { "id": "t3", "category": "femenino", "days": "Lunes y Jueves", "time": "20:00–22:00", "place": "Gimnasio Municipal Project", "coach": "Carla Méndez" }
+  ],
+  "players": [
+    { "id": "p_m01", "name": "Matías Rojas", "number": 4, "position": "Base", "category": "adulto" },
+    { "id": "p_m02", "name": "Diego Soto", "number": 7, "position": "Escolta", "category": "adulto" },
+    { "id": "p_m03", "name": "Ignacio Pérez", "number": 10, "position": "Alero", "category": "adulto" },
+    { "id": "p_m04", "name": "Felipe Cárcamo", "number": 11, "position": "Ala-Pívot", "category": "adulto" },
+    { "id": "p_m05", "name": "Sebastián Díaz", "number": 12, "position": "Pívot", "category": "adulto" },
+    { "id": "p_m06", "name": "Tomás Herrera", "number": 8, "position": "Base", "category": "adulto" },
+    { "id": "p_m07", "name": "Cristóbal Núñez", "number": 15, "position": "Alero", "category": "adulto" },
+    { "id": "p_m08", "name": "Vicente Araya", "number": 21, "position": "Pívot", "category": "adulto" },
+    { "id": "p_s01", "name": "Jorge Muñoz", "number": 5, "position": "Base", "category": "senior" },
+    { "id": "p_s02", "name": "Patricio Lagos", "number": 9, "position": "Escolta", "category": "senior" },
+    { "id": "p_s03", "name": "Marcelo Vera", "number": 14, "position": "Alero", "category": "senior" },
+    { "id": "p_s04", "name": "Hernán Castro", "number": 33, "position": "Pívot", "category": "senior" },
+    { "id": "p_s05", "name": "Luis Tapia", "number": 6, "position": "Ala-Pívot", "category": "senior" },
+    { "id": "p_s06", "name": "Raúl Bravo", "number": 23, "position": "Escolta", "category": "senior" },
+    { "id": "p_f01", "name": "Camila Fuentes", "number": 3, "position": "Base", "category": "femenino" },
+    { "id": "p_f02", "name": "Antonia Reyes", "number": 8, "position": "Escolta", "category": "femenino" },
+    { "id": "p_f03", "name": "Javiera Molina", "number": 11, "position": "Alero", "category": "femenino" },
+    { "id": "p_f04", "name": "Fernanda Silva", "number": 13, "position": "Ala-Pívot", "category": "femenino" },
+    { "id": "p_f05", "name": "Valentina Cruz", "number": 20, "position": "Pívot", "category": "femenino" },
+    { "id": "p_f06", "name": "Isidora Paredes", "number": 7, "position": "Base", "category": "femenino" },
+    { "id": "p_f07", "name": "Josefa Contreras", "number": 9, "position": "Alero", "category": "femenino" }
+  ],
+  "championships": [
+    {
+      "id": "c1", "name": "Liga Regional de Básquetbol 2026", "category": "adulto", "status": "En curso",
+      "standings": [
+        { "id": "s1", "team": "Club Project", "pj": 8, "pg": 6, "pp": 2 },
+        { "id": "s2", "team": "Deportivo Andes", "pj": 8, "pg": 7, "pp": 1 },
+        { "id": "s3", "team": "Los Cóndores", "pj": 8, "pg": 5, "pp": 3 },
+        { "id": "s4", "team": "Atlético Sur", "pj": 8, "pg": 3, "pp": 5 },
+        { "id": "s5", "team": "Unión Central", "pj": 8, "pg": 2, "pp": 6 },
+        { "id": "s6", "team": "Halcones BC", "pj": 8, "pg": 1, "pp": 7 }
+      ],
+      "results": [
+        { "id": "r1", "date": "12 Jun", "home": "Club Project", "away": "Halcones BC", "hs": 78, "as": 64, "status": "finalizado" },
+        { "id": "r2", "date": "19 Jun", "home": "Deportivo Andes", "away": "Club Project", "hs": 71, "as": 69, "status": "finalizado" },
+        { "id": "r3", "date": "03 Jul", "home": "Club Project", "away": "Atlético Sur", "hs": 0, "as": 0, "status": "programado" }
+      ]
+    },
+    {
+      "id": "c2", "name": "Copa Senior +35 2026", "category": "senior", "status": "En curso",
+      "standings": [
+        { "id": "s7", "team": "Club Project", "pj": 6, "pg": 5, "pp": 1 },
+        { "id": "s8", "team": "Veteranos FC", "pj": 6, "pg": 4, "pp": 2 },
+        { "id": "s9", "team": "Old Stars", "pj": 6, "pg": 2, "pp": 4 },
+        { "id": "s10", "team": "Leones Senior", "pj": 6, "pg": 1, "pp": 5 }
+      ],
+      "results": [
+        { "id": "r4", "date": "15 Jun", "home": "Club Project", "away": "Old Stars", "hs": 66, "as": 58, "status": "finalizado" },
+        { "id": "r5", "date": "29 Jun", "home": "Veteranos FC", "away": "Club Project", "hs": 60, "as": 72, "status": "finalizado" },
+        { "id": "r5b", "date": "05 Jul", "home": "Club Project", "away": "Leones Senior", "hs": 0, "as": 0, "status": "programado" }
+      ]
+    },
+    {
+      "id": "c3", "name": "Liga Femenina Metropolitana 2026", "category": "femenino", "status": "En curso",
+      "standings": [
+        { "id": "s11", "team": "Club Project", "pj": 7, "pg": 6, "pp": 1 },
+        { "id": "s12", "team": "Diablas BC", "pj": 7, "pg": 6, "pp": 1 },
+        { "id": "s13", "team": "Panteras", "pj": 7, "pg": 3, "pp": 4 },
+        { "id": "s14", "team": "Estrellas del Sur", "pj": 7, "pg": 2, "pp": 5 },
+        { "id": "s15", "team": "Amazonas", "pj": 7, "pg": 1, "pp": 6 }
+      ],
+      "results": [
+        { "id": "r6", "date": "10 Jun", "home": "Club Project", "away": "Amazonas", "hs": 82, "as": 55, "status": "finalizado" },
+        { "id": "r7", "date": "24 Jun", "home": "Diablas BC", "away": "Club Project", "hs": 68, "as": 70, "status": "finalizado" },
+        { "id": "r8", "date": "08 Jul", "home": "Club Project", "away": "Panteras", "hs": 0, "as": 0, "status": "programado" }
+      ]
+    }
+  ],
+  "gallery": []
+}
