@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { getIdentity } from '@/services/publish'
 
 const PublicLayout = () => import('@/views/public/PublicLayout.vue')
 const AdminLayout = () => import('@/views/admin/AdminLayout.vue')
@@ -40,21 +39,6 @@ const router = createRouter({
   scrollBehavior() {
     return { top: 0 }
   },
-})
-
-// Guard para /admin: exige sesión de Cloudflare Access.
-// En navegación interna (SPA) Access no intercepta, así que verificamos aquí.
-// Si no hay sesión, forzamos una carga real del path protegido → Access muestra el login.
-router.beforeEach(async (to) => {
-  if (!to.path.startsWith('/admin')) return true
-  if (import.meta.env.DEV) return true // en desarrollo local no hay Access
-
-  const id = await getIdentity()
-  if (id && id.email) return true
-
-  // No autenticado: recarga dura del path protegido (Access lo intercepta y pide login).
-  window.location.assign(to.fullPath)
-  return false
 })
 
 export default router

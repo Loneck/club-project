@@ -2,7 +2,8 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useClubStore } from '@/stores/club'
-import { publish, getIdentity, downloadJson, LOGOUT_URL } from '@/services/publish'
+import { publish, checkSession, logout, downloadJson } from '@/services/publish'
+import AdminLogin from '@/views/admin/AdminLogin.vue'
 
 const store = useClubStore()
 const route = useRoute()
@@ -29,30 +30,31 @@ const titles = {
 }
 const title = computed(() => titles[route.name] || 'Administración')
 
+// ——— Sesión ———
+const authed = ref(false)
+const checking = ref(true)
+onMounted(async () => {
+  if (import.meta.env.DEV) {
+    authed.value = true // en desarrollo local no hay función de sesión
+  } else {
+    authed.value = await checkSession()
+  }
+  checking.value = false
+})
+function onLogin() {
+  authed.value = true
+}
+async function doLogout() {
+  await logout()
+  authed.value = false
+}
+
 // ——— Sidebar móvil ———
 const sidebarOpen = ref(false)
 function navGo(name) {
   router.push({ name })
   sidebarOpen.value = false
 }
-
-// ——— Identidad (Cloudflare Access) ———
-const email = ref('')
-const initials = computed(() => (email.value ? email.value.slice(0, 2).toUpperCase() : 'AD'))
-onMounted(async () => {
-  const id = await getIdentity()
-  if (id && id.email) email.value = id.email
-})
-
-// Avisar si se intenta cerrar/recargar con cambios sin publicar.
-function beforeUnload(e) {
-  if (store.dirty) {
-    e.preventDefault()
-    e.returnValue = ''
-  }
-}
-onMounted(() => window.addEventListener('beforeunload', beforeUnload))
-onUnmounted(() => window.removeEventListener('beforeunload', beforeUnload))
 
 // ——— Publicación ———
 const publishing = ref(false)
@@ -64,6 +66,9 @@ async function doPublish() {
     store.showToast('Publicado. El sitio se actualizará en ~1 min.')
     if (commitUrl) console.info('Commit:', commitUrl)
   } catch (e) {
+    if (e.code === 'UNAUTHORIZED') {
+      authed.value = false
+    }
     store.showToast(e.message)
   } finally {
     publishing.value = false
@@ -73,10 +78,26 @@ function descargar() {
   downloadJson(store.exportJson(), 'club.json')
   store.showToast('JSON descargado.')
 }
+
+// Avisar si se intenta cerrar/recargar con cambios sin publicar.
+function beforeUnload(e) {
+  if (store.dirty) {
+    e.preventDefault()
+    e.returnValue = ''
+  }
+}
+onMounted(() => window.addEventListener('beforeunload', beforeUnload))
+onUnmounted(() => window.removeEventListener('beforeunload', beforeUnload))
 </script>
 
 <template>
-  <div class="gv-shell" style="min-height:100vh">
+  <div v-if="checking" style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg-1)">
+    <i class="fa-solid fa-spinner fa-spin" style="font-size:24px;color:var(--accent)"></i>
+  </div>
+
+  <AdminLogin v-else-if="!authed" @success="onLogin" />
+
+  <div v-else class="gv-shell" style="min-height:100vh">
     <div v-if="sidebarOpen" class="admin-overlay" @click="sidebarOpen = false"></div>
 
     <aside class="gv-sidebar" :class="{ 'is-open': sidebarOpen }">
@@ -98,7 +119,7 @@ function descargar() {
       </nav>
       <div style="margin-top:auto;padding:8px;display:flex;flex-direction:column;gap:2px">
         <button class="gv-navitem" @click="navGo('home')"><i class="fa-solid fa-arrow-left"></i>Ver sitio público</button>
-        <a v-if="email" class="gv-navitem" :href="LOGOUT_URL"><i class="fa-solid fa-right-from-bracket"></i>Cerrar sesión</a>
+        <button class="gv-navitem" @click="doLogout"><i class="fa-solid fa-right-from-bracket"></i>Cerrar sesión</button>
       </div>
     </aside>
 
@@ -118,7 +139,7 @@ function descargar() {
             <i class="fa-solid" :class="publishing ? 'fa-spinner fa-spin' : 'fa-cloud-arrow-up'" style="margin-right:6px;font-size:12px"></i>
             {{ publishing ? 'Publicando…' : 'Publicar' }}
           </button>
-          <div class="gv-avatar" :title="email || 'Administrador'">{{ initials }}</div>
+          <div class="gv-avatar" title="Administrador">AD</div>
         </div>
       </div>
 

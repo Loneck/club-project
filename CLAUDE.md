@@ -43,16 +43,22 @@ El contenido público se comparte únicamente vía el `club.json` commiteado.
 
 ## Publicación y seguridad
 
-- **Cliente** (`src/services/publish.js`): `publish()` hace `POST /api/publish` con `{ content }`.
-  `getIdentity()` lee `/cdn-cgi/access/get-identity` (email logueado). `downloadJson()` = respaldo.
-  NO hay token en el navegador. En dev local `/api/publish` no existe (Vite devuelve HTML) →
-  `publish()` detecta content-type no-JSON y avisa.
-- **Servidor** (`functions/api/publish.js`, Cloudflare Pages Function): guarda `GITHUB_TOKEN` como
-  secreto, valida el JWT de Cloudflare Access (si `CF_ACCESS_TEAM_DOMAIN`+`CF_ACCESS_AUD` están
-  seteados) y el `ALLOWED_EMAILS`, luego GET sha + PUT a la Contents API (base64 UTF-8).
-- **Access**: Cloudflare Access protege `/admin*` y `/api/*` (login por correo). Ver README para
-  el setup (env vars + Application/AUD). El UI del dashboard no tiene auth propia: la seguridad
-  vive en Access + el token server-side.
+Autenticación por **contraseña con sesión de cookie HttpOnly** (sin Cloudflare Access).
+
+- **Cliente** (`src/services/publish.js`): `login(pw)` → `POST /api/login`; `checkSession()` →
+  `GET /api/login`; `logout()` → `POST /api/logout`; `publish()` → `POST /api/publish` (la cookie
+  viaja sola, `credentials:'same-origin'`). NO hay token ni contraseña persistida en el navegador.
+  En dev local las funciones no existen (Vite devuelve HTML) → los helpers detectan content-type
+  no-JSON y avisan; `AdminLayout` hace bypass de login en `import.meta.env.DEV`.
+- **Gate del UI**: `AdminLayout.vue` llama `checkSession()` al montar; si no hay sesión renderiza
+  `AdminLogin.vue` (pantalla de contraseña) en vez del panel. No hay guard de router.
+- **Servidor** (`functions/api/`): `login.js` valida contra `ADMIN_PASSWORD` (compara hashes,
+  timing-safe) y setea cookie `cdsp_auth` = SHA-256 derivado de la clave (HttpOnly, Secure,
+  SameSite=Strict, 12h); exporta `isAuthed()`. `publish.js` importa `isAuthed`, y solo si hay
+  sesión hace GET sha + PUT a la Contents API (base64 UTF-8) con `GITHUB_TOKEN`. `logout.js` borra
+  la cookie.
+- **Env vars** (Pages, Production): `ADMIN_PASSWORD` (secret), `GITHUB_TOKEN` (secret),
+  `GITHUB_OWNER`, `GITHUB_REPO`, `GITHUB_BRANCH`, `FILE_PATH`. Ver README.
 
 ## Comandos
 

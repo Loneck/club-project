@@ -77,32 +77,31 @@ commit de `public/data/club.json` con el token de GitHub y dispara el redeploy (
 
 ### Seguridad del dashboard
 
-En un sitio estático, esconder el `/admin` con una contraseña en JS **no es seguridad real**.
-La protección real es doble:
+En un sitio estático, esconder el `/admin` en JS no basta; la protección real es de servidor:
 
 1. **El token de GitHub nunca está en el navegador** — vive como secreto de servidor en la
-   función `functions/api/publish.js` (variable `GITHUB_TOKEN`). Editar en `/admin` solo cambia
-   una copia local; sin pasar por la función no se publica nada.
-2. **Cloudflare Access** protege `/admin*` y `/api/*`: exige login por correo (OTP o Google)
-   contra una lista de correos autorizados. La función además valida el JWT de Access.
+   función (variable `GITHUB_TOKEN`). Editar en `/admin` solo cambia una copia local; sin pasar
+   por la función no se publica nada.
+2. **Sesión por contraseña** — `/admin` muestra una pantalla de login. La función `/api/login`
+   valida la clave contra el secreto `ADMIN_PASSWORD` y crea una **cookie de sesión HttpOnly**
+   (la clave nunca se guarda en el navegador). Tanto ver el panel como publicar requieren esa
+   sesión; `/api/publish` la vuelve a verificar antes de commitear.
 
 ### Setup en Cloudflare (una vez)
 
 1. **GitHub**: crea el repo y súbelo. Genera un *fine-grained PAT* con **Contents: Read and write**
    restringido a este repo.
 2. **Pages**: crea un proyecto conectado al repo. Build `npm run build`, salida `dist`.
-3. **Variables de entorno del proyecto Pages** (Settings → Environment variables):
-   - `GITHUB_TOKEN` (marcar como *Secret*), `GITHUB_OWNER`, `GITHUB_REPO`,
-     `GITHUB_BRANCH` (`main`), `FILE_PATH` (`public/data/club.json`).
-   - `ALLOWED_EMAILS` = correos autorizados separados por coma.
-   - Tras crear la app de Access (paso 4): `CF_ACCESS_TEAM_DOMAIN` (ej `miclub.cloudflareaccess.com`)
-     y `CF_ACCESS_AUD` (Application Audience tag) para validar el JWT.
-4. **Cloudflare Access** (Zero Trust → Access → Applications): agrega una *Self-hosted app*
-   cubriendo `tudominio.pages.dev/admin*` y `tudominio.pages.dev/api/*`, con una política
-   *Allow* por *Emails* (los del club) y login por OTP/Google. Copia el **AUD** al env del paso 3.
+   La carpeta `functions/` se despliega sola como Pages Functions.
+3. **Variables de entorno del proyecto Pages** (Settings → Variables and secrets, entorno
+   Production):
+   - `ADMIN_PASSWORD` (**Secret**) → la contraseña del panel.
+   - `GITHUB_TOKEN` (**Secret**), `GITHUB_OWNER`, `GITHUB_REPO`, `GITHUB_BRANCH` (`main`),
+     `FILE_PATH` (`public/data/club.json`).
+   - Tras guardarlas, haz un **Retry deployment** para que la función las tome.
 
-El botón **Descargar JSON** (ícono ⬇ en el dashboard) baja un respaldo del contenido para
-subirlo a mano al repo si hiciera falta.
+No requiere Cloudflare Access ni tarjeta. El botón **Descargar JSON** (ícono ⬇ en el dashboard)
+baja un respaldo del contenido para subirlo a mano al repo si hiciera falta.
 
 > Para probar la función localmente: `npx wrangler pages dev -- npm run dev` (o `wrangler pages dev dist`).
 > En `npm run dev` a secas, publicar avisa que solo funciona en el sitio desplegado.
