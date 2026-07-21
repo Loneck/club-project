@@ -56,7 +56,10 @@ Autenticación por **contraseña con sesión de cookie HttpOnly** (sin Cloudflar
   timing-safe) y setea cookie `cdsp_auth` = SHA-256 derivado de la clave (HttpOnly, Secure,
   SameSite=Strict, 12h); exporta `isAuthed()`. `publish.js` importa `isAuthed`, y solo si hay
   sesión hace GET sha + PUT a la Contents API (base64 UTF-8) con `GITHUB_TOKEN`. `logout.js` borra
-  la cookie.
+  la cookie. `upload.js` (POST, requiere sesión) commitea una imagen a `public/assets/gallery/` y
+  devuelve su ruta; el cliente redimensiona la foto en el navegador (canvas, máx 1600px, JPEG)
+  antes de enviarla (`uploadImage` en el servicio). Tras subir hay que **Publicar** para que la
+  entrada de galería (club.json) se guarde.
 - **Env vars** (Pages, Production): `ADMIN_PASSWORD` (secret), `GITHUB_TOKEN` (secret),
   `GITHUB_OWNER`, `GITHUB_REPO`, `GITHUB_BRANCH`, `FILE_PATH`. Ver README.
 

@@ -72,6 +72,24 @@ export async function publish(jsonString, message) {
   return res.json()
 }
 
+// Sube una imagen (base64) a la galería vía la función. Devuelve { path }.
+export async function uploadImage(filename, contentBase64) {
+  const res = await fetch('/api/upload', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'same-origin',
+    body: JSON.stringify({ filename, contentBase64 }),
+  })
+  ensureJson(res)
+  if (res.status === 401) {
+    const err = new Error('Tu sesión expiró. Inicia sesión de nuevo.')
+    err.code = 'UNAUTHORIZED'
+    throw err
+  }
+  if (!res.ok) throw new Error(`Error al subir la imagen (${res.status}): ${await readError(res)}`)
+  return res.json()
+}
+
 // Fallback de emergencia: descargar el JSON para subirlo manualmente al repo.
 export function downloadJson(jsonString, filename = 'club.json') {
   const blob = new Blob([jsonString], { type: 'application/json' })
