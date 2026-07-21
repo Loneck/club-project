@@ -8,16 +8,16 @@ const router = useRouter()
 const navPages = [
   { key: 'home', label: 'Inicio', to: { name: 'home' } },
   { key: 'entrenamientos', label: 'Entrenamientos', to: { name: 'entrenamientos' } },
-  { key: 'adulto', label: 'Adulto', to: { name: 'categoria', params: { key: 'adulto' } } },
-  { key: 'senior', label: 'Senior', to: { name: 'categoria', params: { key: 'senior' } } },
-  { key: 'femenino', label: 'Femenino', to: { name: 'categoria', params: { key: 'femenino' } } },
+  { key: 'adulto', label: 'Adulto', to: { name: 'categoria', params: { cat: 'adulto' } } },
+  { key: 'senior', label: 'Senior', to: { name: 'categoria', params: { cat: 'senior' } } },
+  { key: 'femenino', label: 'Femenino', to: { name: 'categoria', params: { cat: 'femenino' } } },
   { key: 'campeonatos', label: 'Campeonatos', to: { name: 'campeonatos' } },
   { key: 'galeria', label: 'Galería', to: { name: 'galeria' } },
   { key: 'contacto', label: 'Contacto', to: { name: 'contacto' } },
 ]
 
 const activeKey = computed(() => {
-  if (route.name === 'categoria') return route.params.key
+  if (route.name === 'categoria') return route.params.cat
   return route.name
 })
 

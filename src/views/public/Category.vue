@@ -3,11 +3,11 @@ import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useClubStore } from '@/stores/club'
 
-const props = defineProps({ key: { type: String, required: true } })
+const props = defineProps({ cat: { type: String, required: true } })
 const store = useClubStore()
 const router = useRouter()
 
-const catKey = computed(() => (store.categories.includes(props.key) ? props.key : null))
+const catKey = computed(() => (store.categories.includes(props.cat) ? props.cat : null))
 
 const data = computed(() => {
   const k = catKey.value

@@ -72,7 +72,7 @@ function matchNav(d) {
 }
 
 function goCategory(key) {
-  router.push({ name: 'categoria', params: { key } })
+  router.push({ name: 'categoria', params: { cat: key } })
 }
 </script>
 

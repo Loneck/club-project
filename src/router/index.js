@@ -10,7 +10,7 @@ const routes = [
     children: [
       { path: '', name: 'home', component: () => import('@/views/public/Home.vue') },
       { path: 'entrenamientos', name: 'entrenamientos', component: () => import('@/views/public/Trainings.vue') },
-      { path: 'categoria/:key', name: 'categoria', component: () => import('@/views/public/Category.vue'), props: true },
+      { path: 'categoria/:cat', name: 'categoria', component: () => import('@/views/public/Category.vue'), props: true },
       { path: 'campeonatos', name: 'campeonatos', component: () => import('@/views/public/Championships.vue') },
       { path: 'galeria', name: 'galeria', component: () => import('@/views/public/Gallery.vue') },
       { path: 'contacto', name: 'contacto', component: () => import('@/views/public/Contact.vue') },
