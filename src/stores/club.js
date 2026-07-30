@@ -4,6 +4,8 @@ const WORKING_KEY = 'cdsp_working_v1'
 
 const POSITIONS = ['Base', 'Escolta', 'Alero', 'Ala-Pívot', 'Pívot']
 
+const MONTHS = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic']
+
 // Categorías por defecto (semilla para una BD vacía o migración de datos antiguos).
 // En runtime las categorías viven en db.categories y se editan desde el dashboard.
 const DEFAULT_CATEGORIES = [
@@ -34,6 +36,7 @@ function emptyDb() {
     trainings: [],
     players: [],
     championships: [],
+    albums: [],
     gallery: [],
   }
 }
@@ -67,8 +70,46 @@ export const useClubStore = defineStore('club', {
       if (!iso) return 'Por confirmar'
       const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso)
       if (!m) return iso
-      const months = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic']
-      return `${parseInt(m[3], 10)} ${months[parseInt(m[2], 10) - 1]}`
+      return `${parseInt(m[3], 10)} ${MONTHS[parseInt(m[2], 10) - 1]}`
+    },
+    // Fecha ISO (YYYY-MM-DD) → "12 jul 2026". Vacía devuelve ''.
+    formatDateLong: () => (iso) => {
+      const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '')
+      if (!m) return iso || ''
+      return `${parseInt(m[3], 10)} ${MONTHS[parseInt(m[2], 10) - 1]} ${m[1]}`
+    },
+
+    // ——— Álbumes de galería ———
+    albumList: (s) => s.db.albums || [],
+    // Más recientes primero; los sin fecha van al final, ordenados por nombre.
+    sortedAlbums() {
+      return [...this.albumList].sort((a, b) => {
+        const dateA = a.date || ''
+        const dateB = b.date || ''
+        if (dateA && dateB && dateA !== dateB) return dateB.localeCompare(dateA)
+        if (dateA && !dateB) return -1
+        if (!dateA && dateB) return 1
+        return (a.name || '').localeCompare(b.name || '')
+      })
+    },
+    albumOptions() {
+      return this.sortedAlbums.map((a) => ({ value: a.id, label: a.name }))
+    },
+    albumName: (s) => (id) => {
+      const a = (s.db.albums || []).find((x) => x.id === id)
+      return a ? a.name : ''
+    },
+    // Galería agrupada para el sitio público: un grupo por álbum con fotos, y al final
+    // las fotos sin álbum (o cuyo álbum ya no existe) bajo "Otras fotos".
+    galleryAlbums() {
+      const images = this.db.gallery || []
+      const groups = this.sortedAlbums
+        .map((a) => ({ id: a.id, name: a.name, date: a.date || '', images: images.filter((i) => i.album === a.id) }))
+        .filter((g) => g.images.length)
+      const known = new Set(this.albumList.map((a) => a.id))
+      const loose = images.filter((i) => !i.album || !known.has(i.album))
+      if (loose.length) groups.push({ id: '', name: 'Otras fotos', date: '', images: loose })
+      return groups
     },
     venue: (s) => s.db.settings?.venue || 'Gimnasio Municipal Project',
     contactInfo: (s) => s.db.settings?.contact || {},
@@ -109,6 +150,9 @@ export const useClubStore = defineStore('club', {
           : DEFAULT_CATEGORIES
         this.db.categories = JSON.parse(JSON.stringify(seed))
       }
+
+      // Migración: datos anteriores a los álbumes de galería.
+      if (!this.db.albums) this.db.albums = []
 
       this.dirty = !!working && JSON.stringify(working) !== JSON.stringify(baseline)
       this.loaded = true
@@ -330,10 +374,42 @@ export const useClubStore = defineStore('club', {
       this.showToast('Partido eliminado')
     },
 
+    // ——— Álbumes de galería ———
+    albumUsage(id) {
+      return { images: (this.db.gallery || []).filter((g) => g.album === id).length }
+    },
+    saveAlbum(item) {
+      if (!this.db.albums) this.db.albums = []
+      const clean = {
+        name: (item.name || '').trim(),
+        date: (item.date || '').trim(),
+      }
+      if (!clean.name) { this.showToast('El nombre del álbum es obligatorio'); return false }
+      if (item.id) {
+        const i = this.db.albums.findIndex((a) => a.id === item.id)
+        if (i >= 0) this.db.albums[i] = { id: item.id, ...clean }
+      } else {
+        this.db.albums.push({ id: uid('a'), ...clean })
+      }
+      this.persist()
+      this.showToast('Álbum guardado')
+      return true
+    },
+    // Eliminar un álbum no borra sus fotos: quedan sin álbum ("Otras fotos" en el sitio).
+    deleteAlbum(id) {
+      this.db.albums = (this.db.albums || []).filter((a) => a.id !== id)
+      const images = this.db.gallery || []
+      images.forEach((g) => {
+        if (g.album === id) g.album = ''
+      })
+      this.persist()
+      this.showToast('Álbum eliminado')
+    },
+
     // ——— Galería ———
     saveGalleryImage(item) {
       if (!this.db.gallery) this.db.gallery = []
-      const clean = { src: item.src, caption: item.caption || '' }
+      const clean = { src: item.src, caption: item.caption || '', album: item.album || '' }
       if (item.id) {
         const i = this.db.gallery.findIndex((x) => x.id === item.id)
         if (i >= 0) this.db.gallery[i] = { id: item.id, ...clean }
