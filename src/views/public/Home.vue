@@ -121,8 +121,8 @@ function goCategory(key) {
           </div>
         </div>
         <div style="display:flex;align-items:center;justify-content:center;position:relative">
-          <div style="position:absolute;width:min(340px,78vw);height:min(340px,78vw);border-radius:999px;background:radial-gradient(circle,rgba(0,175,242,.45),transparent 65%);animation:cdspGlow 5s ease-in-out infinite"></div>
-          <img src="/assets/logo.png" alt="Escudo Club Project" style="position:relative;width:min(340px,78vw);height:auto;object-fit:contain;filter:drop-shadow(0 16px 40px rgba(0,0,0,.55))" />
+          <div class="hero-glow" style="position:absolute;width:min(340px,78vw);height:min(340px,78vw);border-radius:999px;background:radial-gradient(circle,rgba(0,175,242,.45),transparent 65%);animation:cdspGlow 5s ease-in-out infinite"></div>
+          <img src="/assets/logo.png" alt="Escudo Club Project" class="hero-logo" style="position:relative;width:min(340px,78vw);height:auto;object-fit:contain;filter:drop-shadow(0 16px 40px rgba(0,0,0,.55))" />
         </div>
       </div>
     </section>
@@ -170,7 +170,7 @@ function goCategory(key) {
     <section style="max-width:1180px;margin:0 auto;padding:56px 24px 0">
       <div style="background:#0E141B;border-radius:8px;padding:18px 22px;color:#fff;position:relative;overflow:hidden">
         <div style="position:absolute;right:-60px;top:-40px;width:200px;height:200px;border-radius:999px;background:radial-gradient(circle,rgba(0,155,217,.28),transparent 65%)"></div>
-        <div v-if="currentMatch" style="position:relative;display:flex;align-items:center;gap:28px;flex-wrap:wrap">
+        <div v-if="currentMatch" class="match-row" style="position:relative;display:flex;align-items:center;gap:28px;flex-wrap:wrap">
           <div style="min-width:172px">
             <div style="display:flex;align-items:center;gap:8px;font-family:var(--font-family);font-weight:600;font-size:11px;color:#7FD3F2;letter-spacing:.04em;text-transform:uppercase"><i class="fa-solid fa-calendar-check" style="font-size:11px"></i>Próximo partido</div>
             <div style="display:inline-flex;margin-top:10px;padding:3px 10px;border:1px solid rgba(127,211,242,.35);border-radius:999px;font-family:var(--font-family);font-weight:600;font-size:11px;color:#7FD3F2">{{ currentMatch.catLabel }}</div>
@@ -294,7 +294,7 @@ function goCategory(key) {
       <div style="max-width:1180px;margin:0 auto;padding:56px 24px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
         <div>
           <h2 style="font-family:var(--font-family);font-weight:700;font-size:26px;letter-spacing:-.02em;margin:0">¿Listo para volar con el Project?</h2>
-          <p style="font-family:var(--font-family);font-size:15px;color:rgba(255,255,255,.7);margin:8px 0 0">Sumate a los entrenamientos. Todas las categorías, todos los niveles.</p>
+          <p style="font-family:var(--font-family);font-size:15px;line-height:1.5;color:rgba(255,255,255,.7);margin:8px 0 0">Sumate a los entrenamientos. Todas las categorías, todos los niveles.</p>
         </div>
         <button @click="router.push({ name: 'contacto' })" class="gv-btn gv-btn--pill gv-btn--primary" style="height:46px;padding:0 26px;font-size:15px">Cómo unirse</button>
       </div>
@@ -304,10 +304,16 @@ function goCategory(key) {
 
 <style scoped>
 .cat-card:hover { box-shadow: var(--shadow-btn-primary-hover); transform: translateY(-3px); }
+@media (max-width: 640px) {
+  .match-row { flex-direction: column; align-items: center; gap: 18px; text-align: center; }
+  .match-row > * { margin: 0 !important; align-items: center !important; min-width: 0 !important; }
+}
 @media (max-width: 860px) {
   .grid-3 { grid-template-columns: 1fr !important; }
   .grid-2 { grid-template-columns: 1fr !important; }
-  .hero-split { grid-template-columns: 1fr !important; }
+  .hero-split { grid-template-columns: 1fr !important; gap: 24px !important; }
   .hero-stats { grid-template-columns: repeat(2, 1fr) !important; }
+  .hero-logo { width: min(340px, 52vw) !important; }
+  .hero-glow { width: min(340px, 52vw) !important; height: min(340px, 52vw) !important; }
 }
 </style>
