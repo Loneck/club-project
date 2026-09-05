@@ -166,50 +166,50 @@
     },
     {
       "id": "p_f01",
-      "name": "Camila Fuentes",
-      "number": 3,
-      "position": "Base",
+      "name": "Camila Mansilla",
+      "number": 12,
+      "position": "Ala-Pívot",
       "category": "femenino"
     },
     {
       "id": "p_f02",
-      "name": "Antonia Reyes",
+      "name": "Vania Vera ",
       "number": 8,
-      "position": "Escolta",
+      "position": "Base",
       "category": "femenino"
     },
     {
       "id": "p_f03",
-      "name": "Javiera Molina",
+      "name": "Francesca Carrasco",
       "number": 11,
-      "position": "Alero",
+      "position": "Pívot",
       "category": "femenino"
     },
     {
       "id": "p_f04",
-      "name": "Fernanda Silva",
-      "number": 13,
+      "name": "Nicole Ruz",
+      "number": 5,
       "position": "Ala-Pívot",
       "category": "femenino"
     },
     {
       "id": "p_f05",
-      "name": "Valentina Cruz",
-      "number": 20,
-      "position": "Pívot",
+      "name": "Constanza Guerrero",
+      "number": 9,
+      "position": "Escolta",
       "category": "femenino"
     },
     {
       "id": "p_f06",
-      "name": "Isidora Paredes",
+      "name": "Romina Munzenmayer",
       "number": 7,
       "position": "Base",
       "category": "femenino"
     },
     {
       "id": "p_f07",
-      "name": "Josefa Contreras",
-      "number": 9,
+      "name": "Carole Ríos ",
+      "number": 17,
       "position": "Alero",
       "category": "femenino"
     }
