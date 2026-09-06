@@ -68,58 +68,58 @@
   "players": [
     {
       "id": "p_m01",
-      "name": "Matías Rojas",
-      "number": 4,
-      "position": "Base",
+      "name": "Matías Oyarzun",
+      "number": 19,
+      "position": "Alero",
       "category": "adulto"
     },
     {
       "id": "p_m02",
-      "name": "Diego Soto",
-      "number": 7,
-      "position": "Escolta",
-      "category": "adulto"
-    },
-    {
-      "id": "p_m03",
-      "name": "Ignacio Pérez",
-      "number": 10,
-      "position": "Alero",
-      "category": "adulto"
-    },
-    {
-      "id": "p_m04",
-      "name": "Felipe Cárcamo",
-      "number": 11,
+      "name": "Enzo Oyarzun ",
+      "number": 20,
       "position": "Ala-Pívot",
       "category": "adulto"
     },
     {
-      "id": "p_m05",
-      "name": "Sebastián Díaz",
-      "number": 12,
+      "id": "p_m03",
+      "name": "Ignacio Gonzales",
+      "number": 61,
       "position": "Pívot",
       "category": "adulto"
     },
     {
-      "id": "p_m06",
-      "name": "Tomás Herrera",
-      "number": 8,
+      "id": "p_m04",
+      "name": "Franco Carrasco",
+      "number": 25,
+      "position": "Pívot",
+      "category": "adulto"
+    },
+    {
+      "id": "p_m05",
+      "name": "Jorge Uribe",
+      "number": 3,
       "position": "Base",
       "category": "adulto"
     },
     {
+      "id": "p_m06",
+      "name": "Joaquin Rivera",
+      "number": 17,
+      "position": "Escolta",
+      "category": "adulto"
+    },
+    {
       "id": "p_m07",
-      "name": "Cristóbal Núñez",
-      "number": 15,
-      "position": "Alero",
+      "name": "Pedro Hernandez",
+      "number": 81,
+      "position": "Ala-Pívot",
       "category": "adulto"
     },
     {
       "id": "p_m08",
-      "name": "Vicente Araya",
-      "number": 21,
-      "position": "Pívot",
+      "name": "Leandro Gajardo",
+      "number": 13,
+      "position": "Escolta",
       "category": "adulto"
     },
     {
@@ -212,6 +212,76 @@
       "number": 17,
       "position": "Alero",
       "category": "femenino"
+    },
+    {
+      "id": "pr2aca9b",
+      "name": "Paulina Quintana",
+      "number": 29,
+      "position": "Pívot",
+      "category": "femenino"
+    },
+    {
+      "id": "p18z53ma",
+      "name": "Noe Bañarez",
+      "number": 6,
+      "position": "Escolta",
+      "category": "femenino"
+    },
+    {
+      "id": "pzvo8dri",
+      "name": "Martin Rios",
+      "number": 15,
+      "position": "Alero",
+      "category": "adulto"
+    },
+    {
+      "id": "p65q8qpt",
+      "name": "Gonzalo Dauvergne",
+      "number": 26,
+      "position": "Alero",
+      "category": "adulto"
+    },
+    {
+      "id": "pkrmf2qb",
+      "name": "Mario Munster",
+      "number": 33,
+      "position": "Base",
+      "category": "adulto"
+    },
+    {
+      "id": "pn1zmywl",
+      "name": "Martin Tejeda",
+      "number": 1,
+      "position": "Base",
+      "category": "adulto"
+    },
+    {
+      "id": "ptlaredy",
+      "name": "Williams Fernandez ",
+      "number": 100,
+      "position": "Base",
+      "category": "adulto"
+    },
+    {
+      "id": "pxg1x3p3",
+      "name": "Estaban Patiño",
+      "number": 101,
+      "position": "Alero",
+      "category": "adulto"
+    },
+    {
+      "id": "p8xp83h2",
+      "name": "Maximiliano Ramiez",
+      "number": 102,
+      "position": "Alero",
+      "category": "adulto"
+    },
+    {
+      "id": "pt2ns3xl",
+      "name": "Maximiliano González ",
+      "number": 103,
+      "position": "Pívot",
+      "category": "adulto"
     }
   ],
   "championships": [
@@ -361,7 +431,7 @@
     },
     {
       "id": "c3",
-      "name": "Liga Femenina Metropolitana 2026",
+      "name": "Liga Basket TSM ",
       "category": "femenino",
       "status": "En curso",
       "standings": [
