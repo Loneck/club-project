@@ -45,7 +45,7 @@
       "category": "adulto",
       "days": "Martes y Jueves",
       "time": "20:00–22:00",
-      "place": "Gimnasio Municipal Project",
+      "place": "Colegio Alberto Blest Gana, San Ramon",
       "coach": "Biron Vera"
     },
     {
@@ -53,7 +53,7 @@
       "category": "senior",
       "days": "Martes y Jueves",
       "time": "20:00–22:00",
-      "place": "Gimnasio Municipal Project",
+      "place": "Colegio Alberto Blest Gana, San Ramon",
       "coach": "Jorge Merino"
     },
     {
@@ -61,7 +61,7 @@
       "category": "femenino",
       "days": "Lunes y Jueves",
       "time": "20:00–22:00",
-      "place": "Gimnasio Municipal Project",
+      "place": "Colegio Alberto Blest Gana, San Ramon",
       "coach": "Biron Vera"
     }
   ],
@@ -398,15 +398,6 @@
         }
       ],
       "results": [
-        {
-          "id": "r1",
-          "date": "2026-06-12",
-          "home": "Club Project",
-          "away": "Halcones BC",
-          "hs": 78,
-          "as": 64,
-          "status": "finalizado"
-        },
         {
           "id": "r2",
           "date": "2026-06-19",
