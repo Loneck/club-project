@@ -18,7 +18,7 @@ const champsView = computed(() =>
       scoreLabel: g.status === 'finalizado' ? `${g.hs} – ${g.as}` : 'Programado',
       scoreColor: g.status === 'finalizado' ? 'var(--fg-1)' : 'var(--fg-3)',
     }))
-    return { id: ch.id, name: ch.name, catLabel: store.catLabel(ch.category), statusLabel: ch.status, finished: ch.status !== 'En curso', rows, results, hasResults: ch.results.length > 0 }
+    return { id: ch.id, name: ch.name, catLabel: store.catLabel(ch.category), statusLabel: ch.status, finished: ch.status !== 'En curso', pointsRule: store.pointsRule(ch), rows, results, hasResults: ch.results.length > 0 }
   })
 )
 </script>
@@ -42,7 +42,10 @@ const champsView = computed(() =>
           <span class="gv-badge" :style="ch.finished ? 'border-color:var(--stroke-1);color:var(--fg-3)' : 'border-color:var(--accent);color:var(--accent)'">{{ ch.statusLabel }}</span>
         </div>
         <div style="padding:16px 18px 18px">
-          <div style="font-family:var(--font-family);font-weight:600;font-size:12px;color:var(--fg-3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px">Tabla de posiciones</div>
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px">
+            <div style="font-family:var(--font-family);font-weight:600;font-size:12px;color:var(--fg-3);text-transform:uppercase;letter-spacing:.04em">Tabla de posiciones</div>
+            <div style="font-family:var(--font-family);font-weight:600;font-size:12px;color:var(--fg-3)">{{ ch.pointsRule }}</div>
+          </div>
           <div style="border:1px solid var(--stroke-1);border-radius:6px;overflow:auto">
             <div style="min-width:520px">
               <div style="display:grid;grid-template-columns:40px 1fr 48px 48px 48px 56px;background:var(--bg-3);height:36px;align-items:center">

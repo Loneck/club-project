@@ -18,6 +18,13 @@ function uid(pfx) {
   return (pfx || 'x') + Math.random().toString(36).slice(2, 9)
 }
 
+// Convierte a número; si el valor es inválido o vacío devuelve el fallback.
+function num(value, fallback) {
+  if (value === '' || value === null || value === undefined) return fallback
+  const n = Number(value)
+  return Number.isFinite(n) ? n : fallback
+}
+
 // Genera una clave URL-friendly a partir del nombre de la categoría.
 function slugify(text) {
   return String(text || '')
@@ -77,6 +84,13 @@ export const useClubStore = defineStore('club', {
       const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '')
       if (!m) return iso || ''
       return `${parseInt(m[3], 10)} ${MONTHS[parseInt(m[2], 10) - 1]} ${m[1]}`
+    },
+
+    // Leyenda del puntaje de un campeonato: "2 pts por victoria · 0 por derrota".
+    pointsRule: () => (ch) => {
+      const pw = num(ch && ch.pointsWin, 2)
+      const pl = num(ch && ch.pointsLoss, 0)
+      return `${pw} ${pw === 1 ? 'pt' : 'pts'} por victoria · ${pl} por derrota`
     },
 
     // ——— Álbumes de galería ———
@@ -309,17 +323,21 @@ export const useClubStore = defineStore('club', {
 
     // ——— Campeonatos ———
     saveChampionship(item) {
+      const pointsWin = num(item.pointsWin, 2)
+      const pointsLoss = num(item.pointsLoss, 0)
       if (item.id) {
         const i = this.db.championships.findIndex((x) => x.id === item.id)
         if (i >= 0) {
           this.db.championships[i].name = item.name
           this.db.championships[i].category = item.category
           this.db.championships[i].status = item.status || 'En curso'
+          this.db.championships[i].pointsWin = pointsWin
+          this.db.championships[i].pointsLoss = pointsLoss
         }
       } else {
         this.db.championships.push({
           id: uid('c'), name: item.name, category: item.category,
-          status: item.status || 'En curso', standings: [], results: [],
+          status: item.status || 'En curso', pointsWin, pointsLoss, standings: [], results: [],
         })
       }
       this.persist()
@@ -427,7 +445,9 @@ export const useClubStore = defineStore('club', {
 
     // ——— Utilidades de cálculo ———
     rankedStandings(ch) {
-      const rows = (ch.standings || []).map((s) => ({ ...s, pts: s.pg * 2 }))
+      const pw = num(ch.pointsWin, 2)
+      const pl = num(ch.pointsLoss, 0)
+      const rows = (ch.standings || []).map((s) => ({ ...s, pts: s.pg * pw + s.pp * pl }))
       rows.sort((a, b) => b.pts - a.pts || b.pg - a.pg || a.pp - b.pp)
       return rows.map((r, i) => ({ ...r, rank: i + 1 }))
     },

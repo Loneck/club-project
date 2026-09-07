@@ -58,6 +58,8 @@ const fields = computed(() => {
         { value: 'En curso', label: 'En curso' },
         { value: 'Finalizado', label: 'Finalizado' },
       ] },
+      { key: 'pointsWin', label: 'Puntos por partido ganado', type: 'number' },
+      { key: 'pointsLoss', label: 'Puntos por partido perdido', type: 'number' },
     ]
   }
   if (modalKind.value === 'standing') {
@@ -88,7 +90,11 @@ function reset(obj) {
 function open(kind, item) {
   modalKind.value = kind
   editingId.value = item ? item.id : null
-  if (kind === 'champ') reset(item ? { ...item } : { name: '', category: store.categoryList[0] ? store.categoryList[0].key : '', status: 'En curso' })
+  if (kind === 'champ') {
+    reset(item
+      ? { ...item, pointsWin: item.pointsWin ?? 2, pointsLoss: item.pointsLoss ?? 0 }
+      : { name: '', category: store.categoryList[0] ? store.categoryList[0].key : '', status: 'En curso', pointsWin: 2, pointsLoss: 0 })
+  }
   if (kind === 'standing') reset(item ? { ...item } : { team: '', pj: 0, pg: 0, pp: 0 })
   if (kind === 'result') reset(item ? { ...item } : { date: new Date().toISOString().slice(0, 10), home: 'Club Project', away: '', hs: 0, as: 0, status: 'programado' })
   modalOpen.value = true
@@ -156,7 +162,7 @@ function removeResult(id) {
         </div>
 
         <div style="font-family:var(--font-family);font-weight:600;font-size:13px;color:var(--fg-2);margin:16px 0 8px;display:flex;justify-content:space-between;align-items:center">
-          Tabla de posiciones
+          <span>Tabla de posiciones <span style="font-weight:600;color:var(--fg-3)">— {{ store.pointsRule(activeChamp) }}</span></span>
           <button class="gv-btn gv-btn--pill gv-btn--tertiary" style="height:30px" @click="open('standing')"><i class="fa-solid fa-plus" style="margin-right:5px;font-size:11px"></i>Agregar equipo</button>
         </div>
         <div class="table-scroll">

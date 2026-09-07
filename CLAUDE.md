@@ -35,8 +35,10 @@ El contenido público se comparte únicamente vía el `club.json` commiteado.
 
 - Categorías: `adulto | senior | femenino` (etiquetas y helpers en el store: `catLabel`,
   `catShort`, `catIcon`, `catDesc`).
-- Tabla de posiciones: `pts = pg * 2`, orden por `pts`, luego `pg`, luego menor `pp`
-  (`store.rankedStandings`).
+- Tabla de posiciones: `pts = pg * pointsWin + pp * pointsLoss` (`store.rankedStandings`), orden
+  por `pts`, luego `pg`, luego menor `pp`. Cada campeonato define su puntaje en
+  `pointsWin`/`pointsLoss` (editables en "Editar torneo"); si faltan se asume 2 y 0, que era la
+  regla fija anterior. La leyenda se arma con el getter `store.pointsRule(ch)`.
 - IDs generados con `uid(prefijo)`.
 - El modal de formularios es genérico: `EntityModal.vue` guiado por un arreglo `fields`
   (`{ key, label, type: 'text'|'number'|'select', options?, placeholder? }`).
