@@ -2,7 +2,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useClubStore } from '@/stores/club'
-import { publish, checkSession, logout, downloadJson } from '@/services/publish'
+import { publish, checkSession, logout, downloadJson, getPublishedSha } from '@/services/publish'
 import AdminLogin from '@/views/admin/AdminLogin.vue'
 
 const store = useClubStore()
@@ -38,11 +38,13 @@ onMounted(async () => {
     authed.value = true // en desarrollo local no hay función de sesión
   } else {
     authed.value = await checkSession()
+    if (authed.value) store.setBaselineSha(await getPublishedSha())
   }
   checking.value = false
 })
-function onLogin() {
+async function onLogin() {
   authed.value = true
+  store.setBaselineSha(await getPublishedSha())
 }
 async function doLogout() {
   await logout()
@@ -58,18 +60,48 @@ function navGo(name) {
 
 // ——— Publicación ———
 const publishing = ref(false)
-async function doPublish() {
+
+// El servidor rechaza la publicación si el sitio cambió desde que se cargó esta copia de
+// trabajo (o si la copia es anterior a esta protección). Ahí se pide confirmación
+// explícita antes de sobrescribir, porque publicar borraría lo que otro publicó.
+const OVERWRITE_WARNINGS = {
+  STALE_BASE: `El contenido del sitio cambió después de que abriste esta copia: otra persona publicó en el intermedio.
+
+Si publicas ahora, tus cambios REEMPLAZAN los de esa persona.
+
+Aceptar = publicar igual.
+Cancelar = no publicar (revisa el sitio y usa Descartar si tu copia está vieja).`,
+
+  UNKNOWN_BASE: `No se puede saber sobre qué versión se hicieron estos cambios: la copia de trabajo quedó guardada antes de esta protección.
+
+Si publicas ahora, el contenido del sitio se REEMPLAZA por el de esta copia.
+
+Aceptar = publicar igual.
+Cancelar = no publicar (revisa el sitio y usa Descartar si tu copia está vieja).`,
+}
+
+async function doPublish(force = false) {
   publishing.value = true
   try {
-    const { commitUrl } = await publish(store.exportJson(), 'Actualiza contenido del sitio (dashboard)')
-    store.markPublished()
+    const { commitUrl, sha } = await publish(
+      store.exportJson(),
+      'Actualiza contenido del sitio (dashboard)',
+      { baseSha: store.workingBaseSha, force }
+    )
+    store.markPublished(sha)
     store.showToast('Publicado. El sitio se actualizará en ~1 min.')
     if (commitUrl) console.info('Commit:', commitUrl)
   } catch (e) {
     if (e.code === 'UNAUTHORIZED') {
       authed.value = false
+      store.showToast(e.message)
+    } else if (OVERWRITE_WARNINGS[e.code]) {
+      publishing.value = false
+      if (window.confirm(OVERWRITE_WARNINGS[e.code])) return doPublish(true)
+      store.showToast('Publicación cancelada.')
+    } else {
+      store.showToast(e.message)
     }
-    store.showToast(e.message)
   } finally {
     publishing.value = false
   }
@@ -144,6 +176,14 @@ onUnmounted(() => window.removeEventListener('beforeunload', beforeUnload))
       </div>
 
       <div class="gv-page cdsp-scroll" style="overflow:auto">
+        <div v-if="store.isWorkingStale" class="stale-banner">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <div>
+            <strong>Tus cambios sin publicar son más antiguos que el sitio.</strong>
+            Alguien publicó después de que abriste esta copia. Si publicas, reemplazas su trabajo.
+            Revisa el sitio y usa <strong>Descartar</strong> si esta copia ya no sirve.
+          </div>
+        </div>
         <router-view />
       </div>
     </main>
@@ -151,6 +191,22 @@ onUnmounted(() => window.removeEventListener('beforeunload', beforeUnload))
 </template>
 
 <style scoped>
+.stale-banner {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  border: 1px solid var(--warning, #e0a800);
+  border-radius: 6px;
+  background: #fff8e6;
+  font-family: var(--font-family);
+  font-size: 13px;
+  color: var(--fg-1);
+  line-height: 1.5;
+}
+.stale-banner i { color: var(--warning, #e0a800); margin-top: 2px; }
+
 .admin-hamburger {
   display: none;
   width: 36px;

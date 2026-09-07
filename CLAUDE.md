@@ -62,6 +62,16 @@ Autenticación por **contraseña con sesión de cookie HttpOnly** (sin Cloudflar
   devuelve su ruta; el cliente redimensiona la foto en el navegador (canvas, máx 1600px, JPEG)
   antes de enviarla (`uploadImage` en el servicio). Tras subir hay que **Publicar** para que la
   entrada de galería (club.json) se guarde.
+- **Guarda contra sobrescritura**: el panel consulta `GET /api/publish` (devuelve el `sha` del
+  archivo en el repo) al abrir y lo guarda como `baselineSha`. Cuando nace una copia de trabajo,
+  `persist()` la marca con ese sha en `localStorage` (`cdsp_working_base_v1`). Al publicar, el
+  cliente manda ese `baseSha`; si ya no coincide con el del repo, el servidor responde **409
+  STALE_BASE** sin escribir nada, y el panel pide confirmación explícita antes de reintentar con
+  `force`. Una copia sin marca (anterior a esta protección) da **409 UNKNOWN_BASE**, que también
+  exige confirmación. Además, si `store.isWorkingStale`, el panel muestra un banner al entrar.
+  Motivo: el 2026-09-07 un navegador con una copia de trabajo vieja en `localStorage` apretó
+  Publicar y revirtió el sitio a los datos de demo (18 jugadores, sede y campeonatos reales
+  perdidos); se recuperó desde el historial de git.
 - **Env vars** (Pages, Production): `ADMIN_PASSWORD` (secret), `GITHUB_TOKEN` (secret),
   `GITHUB_OWNER`, `GITHUB_REPO`, `GITHUB_BRANCH`, `FILE_PATH`. Ver README.
 

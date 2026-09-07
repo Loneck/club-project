@@ -1,6 +1,9 @@
 import { defineStore } from 'pinia'
 
 const WORKING_KEY = 'cdsp_working_v1'
+// Versión publicada sobre la que se hicieron los cambios de la copia de trabajo. Se
+// compara al publicar para no pisar lo que otra sesión haya publicado en el intermedio.
+const WORKING_BASE_KEY = 'cdsp_working_base_v1'
 
 const POSITIONS = ['Base', 'Escolta', 'Alero', 'Ala-Pívot', 'Pívot']
 
@@ -52,6 +55,8 @@ export const useClubStore = defineStore('club', {
   state: () => ({
     db: emptyDb(),
     baseline: null, // último JSON publicado conocido (para detectar cambios sin publicar)
+    baselineSha: null, // sha de la versión publicada en el repo (lo entrega /api/publish)
+    workingBaseSha: null, // sha sobre el que nació la copia de trabajo; null = desconocido
     loaded: false,
     dirty: false, // hay cambios locales sin publicar
     toast: null,
@@ -85,6 +90,10 @@ export const useClubStore = defineStore('club', {
       if (!m) return iso || ''
       return `${parseInt(m[3], 10)} ${MONTHS[parseInt(m[2], 10) - 1]} ${m[1]}`
     },
+
+    // La copia de trabajo local nació de una versión que ya no es la publicada:
+    // alguien más publicó después. Publicar sin revisar borraría ese trabajo.
+    isWorkingStale: (s) => !!(s.dirty && s.baselineSha && s.workingBaseSha && s.workingBaseSha !== s.baselineSha),
 
     // Leyenda del puntaje de un campeonato: "2 pts por victoria · 0 por derrota".
     pointsRule: () => (ch) => {
@@ -151,6 +160,7 @@ export const useClubStore = defineStore('club', {
       try {
         const raw = localStorage.getItem(WORKING_KEY)
         if (raw) working = JSON.parse(raw)
+        this.workingBaseSha = localStorage.getItem(WORKING_BASE_KEY) || null
       } catch (e) {
         working = null
       }
@@ -175,21 +185,40 @@ export const useClubStore = defineStore('club', {
     persist() {
       try {
         localStorage.setItem(WORKING_KEY, JSON.stringify(this.db))
+        // La copia de trabajo queda marcada con la versión de la que partió.
+        if (!this.workingBaseSha && this.baselineSha) {
+          this.workingBaseSha = this.baselineSha
+          localStorage.setItem(WORKING_BASE_KEY, this.baselineSha)
+        }
       } catch (e) { /* almacenamiento lleno / no disponible */ }
       this.dirty = JSON.stringify(this.db) !== JSON.stringify(this.baseline)
+    },
+
+    // sha de la versión publicada, consultado al abrir el panel. No marca copias de
+    // trabajo previas: si vienen sin marca, publicar pedirá confirmación explícita.
+    setBaselineSha(sha) {
+      this.baselineSha = sha || null
+    },
+
+    clearWorkingBase() {
+      this.workingBaseSha = null
+      try { localStorage.removeItem(WORKING_BASE_KEY) } catch (e) { /* noop */ }
     },
 
     discardChanges() {
       this.db = JSON.parse(JSON.stringify(this.baseline))
       try { localStorage.removeItem(WORKING_KEY) } catch (e) { /* noop */ }
+      this.clearWorkingBase()
       this.dirty = false
       this.showToast('Cambios descartados')
     },
 
-    markPublished() {
+    markPublished(sha) {
       // Tras publicar, el baseline pasa a ser el estado actual
       this.baseline = JSON.parse(JSON.stringify(this.db))
       try { localStorage.removeItem(WORKING_KEY) } catch (e) { /* noop */ }
+      this.clearWorkingBase()
+      if (sha) this.baselineSha = sha
       this.dirty = false
     },
 

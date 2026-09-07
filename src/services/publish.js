@@ -49,15 +49,36 @@ export async function logout() {
   } catch (e) { /* noop */ }
 }
 
-// Publica el JSON del sitio. Devuelve { ok, commitUrl }. Lanza si la sesión expiró (401).
-export async function publish(jsonString, message) {
+// sha de la versión publicada actualmente. Sirve para saber sobre qué base se edita.
+// Devuelve null si no se pudo obtener (sin sesión, en desarrollo local, etc.).
+export async function getPublishedSha() {
+  try {
+    const res = await fetch('/api/publish', { credentials: 'same-origin', cache: 'no-store' })
+    if (!res.ok) return null
+    if (!(res.headers.get('content-type') || '').includes('application/json')) return null
+    return (await res.json()).sha || null
+  } catch (e) {
+    return null
+  }
+}
+
+// Publica el JSON del sitio. Devuelve { ok, commitUrl, sha }.
+// opts.baseSha: versión sobre la que se hicieron los cambios; el servidor responde 409 si
+// el sitio cambió desde entonces. opts.force: publicar igual, sobrescribiendo.
+// Lanza con err.code = 'UNAUTHORIZED' | 'STALE_BASE' | 'UNKNOWN_BASE'.
+export async function publish(jsonString, message, opts = {}) {
   let res
   try {
     res = await fetch('/api/publish', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'same-origin',
-      body: JSON.stringify({ content: jsonString, message }),
+      body: JSON.stringify({
+        content: jsonString,
+        message,
+        baseSha: opts.baseSha || null,
+        force: !!opts.force,
+      }),
     })
   } catch (e) {
     throw new Error('No se pudo contactar el servidor de publicación: ' + e.message)
@@ -66,6 +87,12 @@ export async function publish(jsonString, message) {
   if (res.status === 401) {
     const err = new Error('Tu sesión expiró. Inicia sesión de nuevo.')
     err.code = 'UNAUTHORIZED'
+    throw err
+  }
+  if (res.status === 409) {
+    const body = await res.json().catch(() => ({}))
+    const err = new Error(body.error || 'El contenido del sitio cambió.')
+    err.code = body.code || 'STALE_BASE'
     throw err
   }
   if (!res.ok) throw new Error(`Error al publicar (${res.status}): ${await readError(res)}`)
