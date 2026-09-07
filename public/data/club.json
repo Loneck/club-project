@@ -124,44 +124,44 @@
     },
     {
       "id": "p_s01",
-      "name": "Jorge Muñoz",
-      "number": 4,
+      "name": "Pablo Morales ",
+      "number": 0,
       "position": "Base",
       "category": "senior"
     },
     {
       "id": "p_s02",
-      "name": "Patricio Lagos",
-      "number": 9,
-      "position": "Escolta",
-      "category": "senior"
-    },
-    {
-      "id": "p_s03",
-      "name": "Marcelo Vera",
-      "number": 14,
+      "name": "Bastian Moraga",
+      "number": 23,
       "position": "Alero",
       "category": "senior"
     },
     {
+      "id": "p_s03",
+      "name": "Cristian Neiraa",
+      "number": 0,
+      "position": "Base",
+      "category": "senior"
+    },
+    {
       "id": "p_s04",
-      "name": "Hernán Castro",
-      "number": 33,
-      "position": "Pívot",
+      "name": "Alejandro Sandoval",
+      "number": 0,
+      "position": "Alero",
       "category": "senior"
     },
     {
       "id": "p_s05",
-      "name": "Luis Tapia",
-      "number": 6,
-      "position": "Ala-Pívot",
+      "name": "Leonel Torrejon",
+      "number": 0,
+      "position": "Alero",
       "category": "senior"
     },
     {
       "id": "p_s06",
-      "name": "Raúl Bravo",
-      "number": 23,
-      "position": "Escolta",
+      "name": "Agustin Fuentes",
+      "number": 49,
+      "position": "Ala-Pívot",
       "category": "senior"
     },
     {
@@ -282,6 +282,62 @@
       "number": 103,
       "position": "Pívot",
       "category": "adulto"
+    },
+    {
+      "id": "pcmf1f3f",
+      "name": "Braulio Cabello",
+      "number": 0,
+      "position": "Pívot",
+      "category": "senior"
+    },
+    {
+      "id": "pq1jz6ak",
+      "name": "Daniel Rios",
+      "number": 0,
+      "position": "Escolta",
+      "category": "senior"
+    },
+    {
+      "id": "p1okz6t1",
+      "name": "Eliezer Martinez ",
+      "number": 0,
+      "position": "Escolta",
+      "category": "senior"
+    },
+    {
+      "id": "psn8719x",
+      "name": "Felipe Reyes ",
+      "number": 0,
+      "position": "Ala-Pívot",
+      "category": "senior"
+    },
+    {
+      "id": "p560q6g7",
+      "name": "José Luis Pulgar",
+      "number": 77,
+      "position": "Base",
+      "category": "senior"
+    },
+    {
+      "id": "pt5oiivc",
+      "name": "Denin Cortes ",
+      "number": 0,
+      "position": "Pívot",
+      "category": "senior"
+    },
+    {
+      "id": "pbfrxdm6",
+      "name": "Nelson Peña",
+      "number": 22,
+      "position": "Escolta",
+      "category": "senior"
+    },
+    {
+      "id": "plsvenoq",
+      "name": "Ernesto Flores",
+      "number": 91,
+      "position": "Ala-Pívot",
+      "category": "senior"
     }
   ],
   "championships": [
