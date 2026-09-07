@@ -436,30 +436,86 @@
         {
           "id": "s7",
           "team": "Club Project",
-          "pj": 6,
+          "pj": 7,
           "pg": 5,
-          "pp": 1
-        },
-        {
-          "id": "s8",
-          "team": "Veteranos FC",
-          "pj": 6,
-          "pg": 4,
           "pp": 2
         },
         {
-          "id": "s9",
-          "team": "Old Stars",
-          "pj": 6,
-          "pg": 2,
+          "id": "s8",
+          "team": "Los Q Sean",
+          "pj": 7,
+          "pg": 6,
+          "pp": 1
+        },
+        {
+          "id": "shzk2wb4",
+          "team": "Team Urmon",
+          "pj": 7,
+          "pg": 6,
+          "pp": 1
+        },
+        {
+          "id": "scvtjnvf",
+          "team": "Plaza Crrew",
+          "pj": 7,
+          "pg": 5,
+          "pp": 2
+        },
+        {
+          "id": "sn2mz9h8",
+          "team": "Mixtape",
+          "pj": 7,
+          "pg": 4,
+          "pp": 3
+        },
+        {
+          "id": "su35dtsp",
+          "team": "Piratas",
+          "pj": 7,
+          "pg": 4,
+          "pp": 3
+        },
+        {
+          "id": "so34g157",
+          "team": "Secuases",
+          "pj": 7,
+          "pg": 3,
           "pp": 4
         },
         {
-          "id": "s10",
-          "team": "Leones Senior",
-          "pj": 6,
-          "pg": 1,
+          "id": "smv9n4q3",
+          "team": "Hunter",
+          "pj": 7,
+          "pg": 3,
+          "pp": 4
+        },
+        {
+          "id": "sn9eynbr",
+          "team": "Happy Sport",
+          "pj": 7,
+          "pg": 3,
+          "pp": 4
+        },
+        {
+          "id": "sorkyhni",
+          "team": "Nueva Era",
+          "pj": 7,
+          "pg": 2,
           "pp": 5
+        },
+        {
+          "id": "sx7di2l3",
+          "team": "Lincoln",
+          "pj": 7,
+          "pg": 1,
+          "pp": 6
+        },
+        {
+          "id": "sxz2wluw",
+          "team": "Old Skulll",
+          "pj": 7,
+          "pg": 0,
+          "pp": 7
         }
       ],
       "results": [
