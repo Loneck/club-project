@@ -1,10 +1,10 @@
 {
   "settings": {
     "heroVariant": "split",
-    "venue": "Gimnasio Municipal Project",
+    "venue": "Colegio Alberto Blest Gana, San Ramon",
     "contact": {
-      "email": "contacto@clubproject.cl",
-      "instagram": "@club.project.bsk",
+      "email": "clubdeportivoproject@gmail.com",
+      "instagram": "@clubdeportivo_project",
       "phone": ""
     }
   },
@@ -45,236 +45,359 @@
       "category": "adulto",
       "days": "Martes y Jueves",
       "time": "20:00–22:00",
-      "place": "Gimnasio Municipal Project",
-      "coach": "Rodrigo Fuentes"
+      "place": "Colegio Alberto Blest Gana, San Ramon",
+      "coach": "Biron Vera"
     },
     {
       "id": "t2",
       "category": "senior",
       "days": "Martes y Jueves",
       "time": "20:00–22:00",
-      "place": "Gimnasio Municipal Project",
-      "coach": "Óscar Villagrán"
+      "place": "Colegio Alberto Blest Gana, San Ramon",
+      "coach": "Jorge Merino"
     },
     {
       "id": "t3",
       "category": "femenino",
       "days": "Lunes y Jueves",
       "time": "20:00–22:00",
-      "place": "Gimnasio Municipal Project",
-      "coach": "Carla Méndez"
+      "place": "Colegio Alberto Blest Gana, San Ramon",
+      "coach": "Biron Vera"
     }
   ],
   "players": [
     {
       "id": "p_m01",
-      "name": "Matías Rojas",
-      "number": 4,
-      "position": "Base",
+      "name": "Matías Oyarzun",
+      "number": 19,
+      "position": "Alero",
       "category": "adulto"
     },
     {
       "id": "p_m02",
-      "name": "Diego Soto",
-      "number": 7,
-      "position": "Escolta",
+      "name": "Enzo Oyarzun ",
+      "number": 20,
+      "position": "Ala-Pívot",
       "category": "adulto"
     },
     {
       "id": "p_m03",
-      "name": "Ignacio Pérez",
-      "number": 10,
-      "position": "Alero",
+      "name": "Ignacio Gonzales",
+      "number": 61,
+      "position": "Pívot",
       "category": "adulto"
     },
     {
       "id": "p_m04",
-      "name": "Felipe Cárcamo",
-      "number": 11,
-      "position": "Ala-Pívot",
+      "name": "Franco Carrasco",
+      "number": 25,
+      "position": "Pívot",
       "category": "adulto"
     },
     {
       "id": "p_m05",
-      "name": "Sebastián Díaz",
-      "number": 12,
-      "position": "Pívot",
+      "name": "Jorge Uribe",
+      "number": 3,
+      "position": "Base",
       "category": "adulto"
     },
     {
       "id": "p_m06",
-      "name": "Tomás Herrera",
-      "number": 8,
-      "position": "Base",
+      "name": "Joaquin Rivera",
+      "number": 17,
+      "position": "Escolta",
       "category": "adulto"
     },
     {
       "id": "p_m07",
-      "name": "Cristóbal Núñez",
-      "number": 15,
-      "position": "Alero",
+      "name": "Pedro Hernandez",
+      "number": 81,
+      "position": "Ala-Pívot",
       "category": "adulto"
     },
     {
       "id": "p_m08",
-      "name": "Vicente Araya",
-      "number": 21,
-      "position": "Pívot",
+      "name": "Leandro Gajardo",
+      "number": 13,
+      "position": "Escolta",
       "category": "adulto"
     },
     {
       "id": "p_s01",
-      "name": "Jorge Muñoz",
-      "number": 5,
+      "name": "Pablo Morales ",
+      "number": 0,
       "position": "Base",
-      "category": "senior",
-      "catLabel": "Senior"
+      "category": "senior"
     },
     {
       "id": "p_s02",
-      "name": "Patricio Lagos",
-      "number": 9,
-      "position": "Escolta",
+      "name": "Bastian Moraga",
+      "number": 23,
+      "position": "Alero",
       "category": "senior"
     },
     {
       "id": "p_s03",
-      "name": "Marcelo Vera",
-      "number": 14,
-      "position": "Alero",
+      "name": "Cristian Neiraa",
+      "number": 0,
+      "position": "Base",
       "category": "senior"
     },
     {
       "id": "p_s04",
-      "name": "Hernán Castro",
-      "number": 33,
-      "position": "Pívot",
+      "name": "Alejandro Sandoval",
+      "number": 0,
+      "position": "Alero",
       "category": "senior"
     },
     {
       "id": "p_s05",
-      "name": "Luis Tapia",
-      "number": 6,
-      "position": "Ala-Pívot",
+      "name": "Leonel Torrejon",
+      "number": 0,
+      "position": "Alero",
       "category": "senior"
     },
     {
       "id": "p_s06",
-      "name": "Raúl Bravo",
-      "number": 23,
-      "position": "Escolta",
+      "name": "Agustin Fuentes",
+      "number": 49,
+      "position": "Ala-Pívot",
       "category": "senior"
     },
     {
       "id": "p_f01",
-      "name": "Camila Fuentes",
-      "number": 3,
-      "position": "Base",
+      "name": "Camila Mansilla",
+      "number": 12,
+      "position": "Ala-Pívot",
       "category": "femenino"
     },
     {
       "id": "p_f02",
-      "name": "Antonia Reyes",
+      "name": "Vania Vera ",
       "number": 8,
-      "position": "Escolta",
+      "position": "Base",
       "category": "femenino"
     },
     {
       "id": "p_f03",
-      "name": "Javiera Molina",
+      "name": "Francesca Carrasco",
       "number": 11,
-      "position": "Alero",
+      "position": "Pívot",
       "category": "femenino"
     },
     {
       "id": "p_f04",
-      "name": "Fernanda Silva",
-      "number": 13,
+      "name": "Nicole Ruz",
+      "number": 5,
       "position": "Ala-Pívot",
       "category": "femenino"
     },
     {
       "id": "p_f05",
-      "name": "Valentina Cruz",
-      "number": 20,
-      "position": "Pívot",
+      "name": "Constanza Guerrero",
+      "number": 9,
+      "position": "Escolta",
       "category": "femenino"
     },
     {
       "id": "p_f06",
-      "name": "Isidora Paredes",
+      "name": "Romina Munzenmayer",
       "number": 7,
       "position": "Base",
       "category": "femenino"
     },
     {
       "id": "p_f07",
-      "name": "Josefa Contreras",
-      "number": 9,
+      "name": "Carole Ríos ",
+      "number": 17,
       "position": "Alero",
       "category": "femenino"
+    },
+    {
+      "id": "pr2aca9b",
+      "name": "Paulina Quintana",
+      "number": 29,
+      "position": "Pívot",
+      "category": "femenino"
+    },
+    {
+      "id": "p18z53ma",
+      "name": "Noe Bañarez",
+      "number": 6,
+      "position": "Escolta",
+      "category": "femenino"
+    },
+    {
+      "id": "pzvo8dri",
+      "name": "Martin Rios",
+      "number": 15,
+      "position": "Alero",
+      "category": "adulto"
+    },
+    {
+      "id": "p65q8qpt",
+      "name": "Gonzalo Dauvergne",
+      "number": 26,
+      "position": "Alero",
+      "category": "adulto"
+    },
+    {
+      "id": "pkrmf2qb",
+      "name": "Mario Munster",
+      "number": 33,
+      "position": "Base",
+      "category": "adulto"
+    },
+    {
+      "id": "pn1zmywl",
+      "name": "Martin Tejeda",
+      "number": 1,
+      "position": "Base",
+      "category": "adulto"
+    },
+    {
+      "id": "ptlaredy",
+      "name": "Williams Fernandez ",
+      "number": 100,
+      "position": "Base",
+      "category": "adulto"
+    },
+    {
+      "id": "pxg1x3p3",
+      "name": "Estaban Patiño",
+      "number": 101,
+      "position": "Alero",
+      "category": "adulto"
+    },
+    {
+      "id": "p8xp83h2",
+      "name": "Maximiliano Ramiez",
+      "number": 102,
+      "position": "Alero",
+      "category": "adulto"
+    },
+    {
+      "id": "pt2ns3xl",
+      "name": "Maximiliano González ",
+      "number": 103,
+      "position": "Pívot",
+      "category": "adulto"
+    },
+    {
+      "id": "pcmf1f3f",
+      "name": "Braulio Cabello",
+      "number": 0,
+      "position": "Pívot",
+      "category": "senior"
+    },
+    {
+      "id": "pq1jz6ak",
+      "name": "Daniel Rios",
+      "number": 0,
+      "position": "Escolta",
+      "category": "senior"
+    },
+    {
+      "id": "p1okz6t1",
+      "name": "Eliezer Martinez ",
+      "number": 0,
+      "position": "Escolta",
+      "category": "senior"
+    },
+    {
+      "id": "psn8719x",
+      "name": "Felipe Reyes ",
+      "number": 0,
+      "position": "Ala-Pívot",
+      "category": "senior"
+    },
+    {
+      "id": "p560q6g7",
+      "name": "José Luis Pulgar",
+      "number": 77,
+      "position": "Base",
+      "category": "senior"
+    },
+    {
+      "id": "pt5oiivc",
+      "name": "Denin Cortes ",
+      "number": 0,
+      "position": "Pívot",
+      "category": "senior"
+    },
+    {
+      "id": "pbfrxdm6",
+      "name": "Nelson Peña",
+      "number": 22,
+      "position": "Escolta",
+      "category": "senior"
+    },
+    {
+      "id": "plsvenoq",
+      "name": "Ernesto Flores",
+      "number": 91,
+      "position": "Ala-Pívot",
+      "category": "senior"
     }
   ],
   "championships": [
     {
       "id": "c1",
-      "name": "Liga Regional de Básquetbol 2026",
+      "name": "Liga BAsket TSM",
       "category": "adulto",
       "status": "En curso",
       "standings": [
         {
           "id": "s1",
           "team": "Club Project",
-          "pj": 8,
-          "pg": 6,
+          "pj": 4,
+          "pg": 2,
           "pp": 2
         },
         {
           "id": "s2",
-          "team": "Deportivo Andes",
-          "pj": 8,
-          "pg": 7,
-          "pp": 1
+          "team": "Los Peumos",
+          "pj": 4,
+          "pg": 4,
+          "pp": 0
         },
         {
           "id": "s3",
-          "team": "Los Cóndores",
-          "pj": 8,
-          "pg": 5,
-          "pp": 3
+          "team": "Team Work",
+          "pj": 3,
+          "pg": 3,
+          "pp": 0
         },
         {
           "id": "s4",
-          "team": "Atlético Sur",
-          "pj": 8,
-          "pg": 3,
-          "pp": 5
+          "team": "Reapers",
+          "pj": 3,
+          "pg": 2,
+          "pp": 1
         },
         {
           "id": "s5",
-          "team": "Unión Central",
-          "pj": 8,
+          "team": "Pilar",
+          "pj": 3,
           "pg": 2,
-          "pp": 6
+          "pp": 1
         },
         {
           "id": "s6",
-          "team": "Halcones BC",
-          "pj": 8,
-          "pg": 1,
-          "pp": 7
+          "team": "Pool Hoopers",
+          "pj": 5,
+          "pg": 0,
+          "pp": 5
+        },
+        {
+          "id": "sxjjyk3w",
+          "team": "Maria Monvel",
+          "pj": 4,
+          "pg": 0,
+          "pp": 4
         }
       ],
       "results": [
-        {
-          "id": "r1",
-          "date": "2026-06-12",
-          "home": "Club Project",
-          "away": "Halcones BC",
-          "hs": 78,
-          "as": 64,
-          "status": "finalizado"
-        },
         {
           "id": "r2",
           "date": "2026-06-19",
@@ -297,37 +420,93 @@
     },
     {
       "id": "c2",
-      "name": "Copa Senior +35 2026",
+      "name": "Liga Simon Bolivar ",
       "category": "senior",
       "status": "En curso",
       "standings": [
         {
           "id": "s7",
           "team": "Club Project",
-          "pj": 6,
+          "pj": 7,
           "pg": 5,
-          "pp": 1
-        },
-        {
-          "id": "s8",
-          "team": "Veteranos FC",
-          "pj": 6,
-          "pg": 4,
           "pp": 2
         },
         {
-          "id": "s9",
-          "team": "Old Stars",
-          "pj": 6,
-          "pg": 2,
+          "id": "s8",
+          "team": "Los Q Sean",
+          "pj": 7,
+          "pg": 6,
+          "pp": 1
+        },
+        {
+          "id": "shzk2wb4",
+          "team": "Team Urmon",
+          "pj": 7,
+          "pg": 6,
+          "pp": 1
+        },
+        {
+          "id": "scvtjnvf",
+          "team": "Plaza Crrew",
+          "pj": 7,
+          "pg": 5,
+          "pp": 2
+        },
+        {
+          "id": "sn2mz9h8",
+          "team": "Mixtape",
+          "pj": 7,
+          "pg": 4,
+          "pp": 3
+        },
+        {
+          "id": "su35dtsp",
+          "team": "Piratas",
+          "pj": 7,
+          "pg": 4,
+          "pp": 3
+        },
+        {
+          "id": "so34g157",
+          "team": "Secuases",
+          "pj": 7,
+          "pg": 3,
           "pp": 4
         },
         {
-          "id": "s10",
-          "team": "Leones Senior",
-          "pj": 6,
-          "pg": 1,
+          "id": "smv9n4q3",
+          "team": "Hunter",
+          "pj": 7,
+          "pg": 3,
+          "pp": 4
+        },
+        {
+          "id": "sn9eynbr",
+          "team": "Happy Sport",
+          "pj": 7,
+          "pg": 3,
+          "pp": 4
+        },
+        {
+          "id": "sorkyhni",
+          "team": "Nueva Era",
+          "pj": 7,
+          "pg": 2,
           "pp": 5
+        },
+        {
+          "id": "sx7di2l3",
+          "team": "Lincoln",
+          "pj": 7,
+          "pg": 1,
+          "pp": 6
+        },
+        {
+          "id": "sxz2wluw",
+          "team": "Old Skulll",
+          "pj": 7,
+          "pg": 0,
+          "pp": 7
         }
       ],
       "results": [
@@ -362,7 +541,7 @@
     },
     {
       "id": "c3",
-      "name": "Liga Femenina Metropolitana 2026",
+      "name": "Liga Basket TSM ",
       "category": "femenino",
       "status": "En curso",
       "standings": [
@@ -370,36 +549,64 @@
           "id": "s11",
           "team": "Club Project",
           "pj": 7,
-          "pg": 6,
-          "pp": 1
+          "pg": 7,
+          "pp": 0
         },
         {
           "id": "s12",
-          "team": "Diablas BC",
-          "pj": 7,
-          "pg": 6,
+          "team": "Chichos Team",
+          "pj": 6,
+          "pg": 5,
           "pp": 1
         },
         {
           "id": "s13",
-          "team": "Panteras",
+          "team": "Ubuntu",
           "pj": 7,
           "pg": 3,
           "pp": 4
         },
         {
           "id": "s14",
-          "team": "Estrellas del Sur",
-          "pj": 7,
-          "pg": 2,
-          "pp": 5
+          "team": "Kimichi",
+          "pj": 6,
+          "pg": 3,
+          "pp": 3
         },
         {
           "id": "s15",
-          "team": "Amazonas",
+          "team": "U. Dragones",
+          "pj": 6,
+          "pg": 3,
+          "pp": 3
+        },
+        {
+          "id": "snrozo2v",
+          "team": "U. La Granja",
+          "pj": 6,
+          "pg": 3,
+          "pp": 3
+        },
+        {
+          "id": "s8oe3tk3",
+          "team": "Pilar ",
+          "pj": 6,
+          "pg": 2,
+          "pp": 4
+        },
+        {
+          "id": "s6l7az90",
+          "team": "Ingeniería UC",
+          "pj": 5,
+          "pg": 2,
+          "pp": 3
+        },
+        {
+          "id": "sut9xln2",
+          "team": "Liwen",
           "pj": 7,
-          "pg": 1,
-          "pp": 6
+          "pg": 0,
+          "pp": 7
         }
       ],
       "results": [
@@ -433,6 +640,6 @@
       ]
     }
   ],
-  "gallery": [],
-  "albums": []
+  "albums": [],
+  "gallery": []
 }
