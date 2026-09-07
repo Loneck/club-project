@@ -46,7 +46,7 @@
       "days": "Martes y Jueves",
       "time": "20:00–22:00",
       "place": "Gimnasio Municipal Project",
-      "coach": "Rodrigo Fuentes"
+      "coach": "Biron Vera"
     },
     {
       "id": "t2",
@@ -54,7 +54,7 @@
       "days": "Martes y Jueves",
       "time": "20:00–22:00",
       "place": "Gimnasio Municipal Project",
-      "coach": "Óscar Villagrán"
+      "coach": "Jorge Merino"
     },
     {
       "id": "t3",
@@ -62,7 +62,7 @@
       "days": "Lunes y Jueves",
       "time": "20:00–22:00",
       "place": "Gimnasio Municipal Project",
-      "coach": "Carla Méndez"
+      "coach": "Biron Vera"
     }
   ],
   "players": [
@@ -343,51 +343,58 @@
   "championships": [
     {
       "id": "c1",
-      "name": "Liga Regional de Básquetbol 2026",
+      "name": "Liga BAsket TSM",
       "category": "adulto",
       "status": "En curso",
       "standings": [
         {
           "id": "s1",
           "team": "Club Project",
-          "pj": 8,
-          "pg": 6,
+          "pj": 4,
+          "pg": 2,
           "pp": 2
         },
         {
           "id": "s2",
-          "team": "Deportivo Andes",
-          "pj": 8,
-          "pg": 7,
-          "pp": 1
+          "team": "Los Peumos",
+          "pj": 4,
+          "pg": 4,
+          "pp": 0
         },
         {
           "id": "s3",
-          "team": "Los Cóndores",
-          "pj": 8,
-          "pg": 5,
-          "pp": 3
+          "team": "Team Work",
+          "pj": 3,
+          "pg": 3,
+          "pp": 0
         },
         {
           "id": "s4",
-          "team": "Atlético Sur",
-          "pj": 8,
-          "pg": 3,
-          "pp": 5
+          "team": "Reapers",
+          "pj": 3,
+          "pg": 2,
+          "pp": 1
         },
         {
           "id": "s5",
-          "team": "Unión Central",
-          "pj": 8,
+          "team": "Pilar",
+          "pj": 3,
           "pg": 2,
-          "pp": 6
+          "pp": 1
         },
         {
           "id": "s6",
-          "team": "Halcones BC",
-          "pj": 8,
-          "pg": 1,
-          "pp": 7
+          "team": "Pool Hoopers",
+          "pj": 5,
+          "pg": 0,
+          "pp": 5
+        },
+        {
+          "id": "sxjjyk3w",
+          "team": "Maria Monvel",
+          "pj": 4,
+          "pg": 0,
+          "pp": 4
         }
       ],
       "results": [
@@ -422,7 +429,7 @@
     },
     {
       "id": "c2",
-      "name": "Copa Senior +35 2026",
+      "name": "Liga Simon Bolivar ",
       "category": "senior",
       "status": "En curso",
       "standings": [
@@ -495,36 +502,64 @@
           "id": "s11",
           "team": "Club Project",
           "pj": 7,
-          "pg": 6,
-          "pp": 1
+          "pg": 7,
+          "pp": 0
         },
         {
           "id": "s12",
-          "team": "Diablas BC",
-          "pj": 7,
-          "pg": 6,
+          "team": "Chichos Team",
+          "pj": 6,
+          "pg": 5,
           "pp": 1
         },
         {
           "id": "s13",
-          "team": "Panteras",
+          "team": "Ubuntu",
           "pj": 7,
           "pg": 3,
           "pp": 4
         },
         {
           "id": "s14",
-          "team": "Estrellas del Sur",
-          "pj": 7,
-          "pg": 2,
-          "pp": 5
+          "team": "Kimichi",
+          "pj": 6,
+          "pg": 3,
+          "pp": 3
         },
         {
           "id": "s15",
-          "team": "Amazonas",
+          "team": "U. Dragones",
+          "pj": 6,
+          "pg": 3,
+          "pp": 3
+        },
+        {
+          "id": "snrozo2v",
+          "team": "U. La Granja",
+          "pj": 6,
+          "pg": 3,
+          "pp": 3
+        },
+        {
+          "id": "s8oe3tk3",
+          "team": "Pilar ",
+          "pj": 6,
+          "pg": 2,
+          "pp": 4
+        },
+        {
+          "id": "s6l7az90",
+          "team": "Ingeniería UC",
+          "pj": 5,
+          "pg": 2,
+          "pp": 3
+        },
+        {
+          "id": "sut9xln2",
+          "team": "Liwen",
           "pj": 7,
-          "pg": 1,
-          "pp": 6
+          "pg": 0,
+          "pp": 7
         }
       ],
       "results": [
